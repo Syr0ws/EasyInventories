@@ -1,5 +1,6 @@
 .idea/
-EasyInventories.iml
-test/
+src/test/
 target/
+
+EasyInventories.iml
 src/main/java/fr/syrows/Test.java
