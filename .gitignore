@@ -1,2 +1,4 @@
 .idea/
 EasyInventories.iml
+test/
+target/
