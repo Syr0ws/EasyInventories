@@ -64,7 +64,7 @@ public class FastInventory implements EasyInventory {
         }
 
         @Override
-        protected FastInventory build() {
+        public FastInventory build() {
 
             FastInventory inventory = new FastInventory(super.manager);
 

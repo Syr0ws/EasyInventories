@@ -1,6 +1,7 @@
 package fr.syrows.inventories.builders.tools;
 
 import fr.syrows.inventories.InventorySort;
+import fr.syrows.inventories.interfaces.EasyInventory;
 
 public class BuilderValidator {
 
@@ -20,5 +21,12 @@ public class BuilderValidator {
 
         if(!sort.isValid(size))
             throw new IllegalArgumentException(String.format("Size %d is invalid for the type '%s'.", size, sort.name()));
+    }
+
+    public static void validateInventory(EasyInventory inventory) {
+
+        BuilderValidator.validateIdentifier(inventory.getIdentifier());
+        BuilderValidator.validateTitle(inventory.getTitle());
+        BuilderValidator.validateSize(inventory.getSort(), inventory.getSize());
     }
 }

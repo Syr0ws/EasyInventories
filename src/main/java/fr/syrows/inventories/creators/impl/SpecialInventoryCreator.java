@@ -1,6 +1,7 @@
 package fr.syrows.inventories.creators.impl;
 
 import fr.syrows.inventories.InventorySort;
+import fr.syrows.inventories.builders.tools.BuilderValidator;
 import fr.syrows.inventories.creators.InventoryCreator;
 import fr.syrows.inventories.interfaces.EasyInventory;
 import fr.syrows.utils.Utils;
@@ -18,6 +19,8 @@ public class SpecialInventoryCreator implements InventoryCreator {
 
     @Override
     public Inventory getInventory(EasyInventory inventory) {
+
+        BuilderValidator.validateInventory(inventory);
 
         String title = Utils.parseColors(inventory.getTitle());
 

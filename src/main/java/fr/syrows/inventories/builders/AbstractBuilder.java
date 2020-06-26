@@ -13,5 +13,5 @@ public interface AbstractBuilder<SELF, T extends EasyInventory> {
 
     SELF withSort(InventorySort sort);
 
-    T get();
+    T build();
 }

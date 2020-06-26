@@ -24,8 +24,6 @@ public abstract class InventoryBuilder<SELF, T extends EasyInventory> implements
         this.size = this.sort.getDefaultSize();
     }
 
-    protected abstract T build();
-
     @Override
     public SELF withIdentifier(String identifier) {
         this.identifier = identifier;
@@ -48,16 +46,6 @@ public abstract class InventoryBuilder<SELF, T extends EasyInventory> implements
     public SELF withSort(InventorySort sort) {
         this.sort = sort;
         return this.self();
-    }
-
-    @Override
-    public T get() {
-
-        BuilderValidator.validateIdentifier(this.identifier);
-        BuilderValidator.validateTitle(this.title);
-        BuilderValidator.validateSize(this.sort, this.size);
-
-        return this.build();
     }
 
     @SuppressWarnings("unchecked")

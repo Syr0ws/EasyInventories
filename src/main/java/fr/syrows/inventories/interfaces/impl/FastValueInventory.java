@@ -30,7 +30,7 @@ public class FastValueInventory<T> extends FastInventory implements ValueInvento
         }
 
         @Override
-        protected FastValueInventory<T> build() {
+        public FastValueInventory<T> build() {
 
             FastValueInventory<T> inventory = new FastValueInventory<>(super.manager);
 
