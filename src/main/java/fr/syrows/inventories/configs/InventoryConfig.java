@@ -7,7 +7,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class InventoryFile {
+public class InventoryConfig {
 
     private Plugin plugin;
     private String resourcePath;
@@ -15,7 +15,7 @@ public class InventoryFile {
     private Path path;
     private YamlConfiguration config;
 
-    public InventoryFile(Plugin plugin, Path path, String resourcePath) {
+    public InventoryConfig(Plugin plugin, Path path, String resourcePath) {
         this.plugin = plugin;
         this.path = path;
         this.resourcePath = resourcePath;
@@ -45,6 +45,10 @@ public class InventoryFile {
     }
 
     public InventorySection getSection(String path) {
+
+        if(!this.config.isSet(path))
+            throw new NullPointerException(String.format("No section found at '%s'.", path));
+
         return new InventorySection(this.config.getConfigurationSection(path));
     }
 }

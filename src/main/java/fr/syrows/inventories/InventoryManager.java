@@ -1,14 +1,12 @@
 package fr.syrows.inventories;
 
-import fr.syrows.inventories.contents.items.ClickableItem;
 import fr.syrows.inventories.contents.InventoryContents;
+import fr.syrows.inventories.contents.items.ClickableItem;
 import fr.syrows.inventories.creators.InventoryCreator;
 import fr.syrows.inventories.creators.impl.ChestInventoryCreator;
 import fr.syrows.inventories.creators.impl.SpecialInventoryCreator;
 import fr.syrows.inventories.interfaces.AdvancedInventory;
 import fr.syrows.inventories.openers.InventoryOpener;
-import fr.syrows.inventories.openers.impl.DefaultOpener;
-import fr.syrows.inventories.openers.impl.PageableInventoryOpener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,9 +15,6 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.Inventory;
@@ -158,6 +153,24 @@ public class InventoryManager {
             inventory.accept(event);
 
             InventoryManager.this.inventories.remove(player);
+        }
+
+        @EventHandler
+        public void onInventoryDrag(InventoryDragEvent event) {
+
+            Player player = (Player) event.getWhoClicked();
+
+            // Do not use consumers here.
+            // The clicked inventory is always the top inventory so if a player clicks on its
+            // inventory, it will consider the one at the top and not the real clicked.
+
+            if(!InventoryManager.this.hasOpenedInventory(player)) return;
+
+            AdvancedInventory inventory = InventoryManager.this.getOpenedInventory(player);
+
+            boolean match = event.getRawSlots().stream().anyMatch(slot -> slot < inventory.getSize());
+
+            event.setCancelled(match);
         }
 
         @EventHandler
