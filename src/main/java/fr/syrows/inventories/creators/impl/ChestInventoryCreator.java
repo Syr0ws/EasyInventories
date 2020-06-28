@@ -1,10 +1,9 @@
 package fr.syrows.inventories.creators.impl;
 
 import fr.syrows.inventories.InventorySort;
-import fr.syrows.inventories.builders.tools.BuilderValidator;
+import fr.syrows.inventories.utils.Utils;
 import fr.syrows.inventories.creators.InventoryCreator;
-import fr.syrows.inventories.interfaces.EasyInventory;
-import fr.syrows.utils.Utils;
+import fr.syrows.inventories.interfaces.AdvancedInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -12,9 +11,7 @@ import org.bukkit.inventory.Inventory;
 public class ChestInventoryCreator implements InventoryCreator {
 
     @Override
-    public Inventory getInventory(EasyInventory inventory) {
-
-        BuilderValidator.validateInventory(inventory);
+    public Inventory getInventory(AdvancedInventory inventory) {
 
         String title = Utils.parseColors(inventory.getTitle());
 

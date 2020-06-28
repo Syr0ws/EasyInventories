@@ -2,10 +2,9 @@ package fr.syrows.inventories.builders;
 
 import fr.syrows.inventories.InventoryManager;
 import fr.syrows.inventories.InventorySort;
-import fr.syrows.inventories.builders.tools.BuilderValidator;
-import fr.syrows.inventories.interfaces.EasyInventory;
+import fr.syrows.inventories.interfaces.AdvancedInventory;
 
-public abstract class InventoryBuilder<SELF, T extends EasyInventory> implements AbstractBuilder<SELF, T> {
+public abstract class InventoryBuilder<SELF, T extends AdvancedInventory> implements AbstractBuilder<SELF, T> {
 
     protected InventoryManager manager;
 

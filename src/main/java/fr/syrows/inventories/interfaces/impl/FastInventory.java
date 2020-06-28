@@ -4,16 +4,19 @@ import fr.syrows.inventories.InventoryManager;
 import fr.syrows.inventories.InventorySort;
 import fr.syrows.inventories.builders.InventoryBuilder;
 import fr.syrows.inventories.contents.InventoryContents;
-import fr.syrows.inventories.interfaces.EasyInventory;
+import fr.syrows.inventories.contents.impl.DefaultContents;
+import fr.syrows.inventories.interfaces.AdvancedInventory;
+import fr.syrows.inventories.openers.InventoryOpener;
+import fr.syrows.inventories.openers.impl.DefaultOpener;
 import org.bukkit.inventory.Inventory;
 
-public class FastInventory implements EasyInventory {
+public class FastInventory implements AdvancedInventory {
 
     protected String identifier, title;
     protected InventorySort sort;
     protected int size;
 
-    protected InventoryContents<EasyInventory> contents;
+    protected InventoryContents contents;
     protected Inventory inventory;
 
     private InventoryManager manager;
@@ -48,7 +51,7 @@ public class FastInventory implements EasyInventory {
     }
 
     @Override
-    public InventoryContents<? extends EasyInventory> getContents() {
+    public InventoryContents getContents() {
         return this.contents;
     }
 
@@ -73,7 +76,7 @@ public class FastInventory implements EasyInventory {
             inventory.size = super.size;
             inventory.sort = super.sort;
 
-            inventory.contents = new InventoryContents<>(inventory);
+            inventory.contents = new DefaultContents(inventory);
             inventory.inventory = this.manager.create(inventory);
 
             return inventory;

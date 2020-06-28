@@ -17,6 +17,10 @@ public class PaginationSettings {
         return this.endSlot;
     }
 
+    public int countSlots() {
+        return (this.endSlot - this.beginSlot) + 1;
+    }
+
     public static class Builder {
 
         private int beginSlot, endSlot;

@@ -1,11 +1,14 @@
 package fr.syrows.inventories;
 
-import fr.syrows.inventories.contents.InventoryContents;
 import fr.syrows.inventories.contents.items.ClickableItem;
+import fr.syrows.inventories.contents.InventoryContents;
 import fr.syrows.inventories.creators.InventoryCreator;
 import fr.syrows.inventories.creators.impl.ChestInventoryCreator;
 import fr.syrows.inventories.creators.impl.SpecialInventoryCreator;
-import fr.syrows.inventories.interfaces.EasyInventory;
+import fr.syrows.inventories.interfaces.AdvancedInventory;
+import fr.syrows.inventories.openers.InventoryOpener;
+import fr.syrows.inventories.openers.impl.DefaultOpener;
+import fr.syrows.inventories.openers.impl.PageableInventoryOpener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +16,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.Inventory;
@@ -22,20 +29,18 @@ import org.bukkit.plugin.PluginManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class InventoryManager {
 
-    private static final List<InventoryCreator> creators = Arrays.asList(new ChestInventoryCreator(), new SpecialInventoryCreator());
+    private static final List<InventoryCreator> CREATORS = Arrays.asList(new ChestInventoryCreator(), new SpecialInventoryCreator());
 
     private Plugin plugin;
 
-    private HashMap<Player, EasyInventory> inventories = new HashMap<>();
+    private HashMap<Player, AdvancedInventory> inventories = new HashMap<>();
 
     public InventoryManager(Plugin plugin) {
 
@@ -45,11 +50,11 @@ public class InventoryManager {
         pm.registerEvents(new InventoryListeners(), this.plugin);
     }
 
-    public Inventory create(EasyInventory inventory) {
+    public Inventory create(AdvancedInventory inventory) {
 
         InventorySort sort = inventory.getSort();
 
-        Optional<InventoryCreator> optional = InventoryManager.creators.stream()
+        Optional<InventoryCreator> optional = InventoryManager.CREATORS.stream()
                 .filter(creator -> creator.isSupported(sort))
                 .findFirst();
 
@@ -59,19 +64,21 @@ public class InventoryManager {
         return optional.get().getInventory(inventory);
     }
 
-    public void open(Player player, EasyInventory inventory) {
+    public <T extends AdvancedInventory> void open(Player player, T inventory, InventoryOpener<T> opener) {
 
         if(inventory.getInventory() == null)
             throw new NullPointerException("Bukkit inventory is null. Create it first.");
 
         if(this.hasOpenedInventory(player)) this.close(player);
 
-        player.openInventory(inventory.getInventory());
+        opener.open(player, inventory);
 
         this.inventories.put(player, inventory);
     }
 
     public void close(Player player) {
+
+        if(!this.hasOpenedInventory(player)) return;
 
         player.closeInventory();
 
@@ -82,11 +89,11 @@ public class InventoryManager {
         return this.inventories.containsKey(player);
     }
 
-    public EasyInventory getOpenedInventory(Player player) {
+    public AdvancedInventory getOpenedInventory(Player player) {
         return this.inventories.getOrDefault(player, null);
     }
 
-    public List<Player> getViewers(EasyInventory inventory) {
+    public List<Player> getViewers(AdvancedInventory inventory) {
 
         return this.inventories.entrySet().stream()
                 .filter(entry -> entry.getValue().equals(inventory))
@@ -123,17 +130,19 @@ public class InventoryManager {
 
             if(clicked == null || !InventoryManager.this.hasOpenedInventory(player)) return;
 
-            EasyInventory inventory = InventoryManager.this.getOpenedInventory(player);
+            AdvancedInventory inventory = InventoryManager.this.getOpenedInventory(player);
 
             if(!clicked.equals(player.getInventory())) {
 
                 event.setCancelled(true);
 
-                InventoryContents<? extends EasyInventory> contents = inventory.getContents();
+                InventoryContents contents = inventory.getContents();
 
                 Optional<ClickableItem> optional = contents.getItem(event.getSlot());
 
                 optional.ifPresent(clickableItem -> clickableItem.accept(event));
+
+                inventory.accept(event);
 
             } else event.setCancelled(this.toCancel.contains(event.getAction()));
         }
@@ -145,6 +154,9 @@ public class InventoryManager {
 
             if(!InventoryManager.this.hasOpenedInventory(player)) return;
 
+            AdvancedInventory inventory = InventoryManager.this.getOpenedInventory(player);
+            inventory.accept(event);
+
             InventoryManager.this.inventories.remove(player);
         }
 
@@ -155,9 +167,7 @@ public class InventoryManager {
 
             if(!InventoryManager.this.hasOpenedInventory(player)) return;
 
-            EasyInventory inventory = InventoryManager.this.getOpenedInventory(player);
-
-            inventory.close(player);
+            InventoryManager.this.close(player);
         }
 
         @EventHandler
@@ -167,11 +177,7 @@ public class InventoryManager {
 
             ArrayList<Player> viewers = InventoryManager.this.getAllViewers();
 
-            viewers.forEach(player -> {
-
-                EasyInventory inventory = InventoryManager.this.getOpenedInventory(player);
-                inventory.close(player);
-            });
+            viewers.forEach(InventoryManager.this::close);
         }
     }
 }

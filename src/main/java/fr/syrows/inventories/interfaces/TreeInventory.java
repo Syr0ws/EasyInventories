@@ -2,37 +2,32 @@ package fr.syrows.inventories.interfaces;
 
 import org.bukkit.entity.Player;
 
-public interface TreeInventory extends EasyInventory {
+public interface TreeInventory extends AdvancedInventory {
 
     TreeInventory getParent();
 
-    EasyInventory getOpened();
+    void setParent(TreeInventory inventory);
 
-    void setOpened(EasyInventory inventory);
+    TreeInventory getOpened();
 
-    default boolean hasParent() {
-        return this.getParent() != null;
-    }
-
-    default boolean hasOpened() {
-        return this.getOpened() != null;
-    }
+    void setOpened(TreeInventory inventory);
 
     default void back(Player player) {
 
         TreeInventory parent = this.getParent();
 
         if(parent == null)
-            throw new NullPointerException("Parent inventory is null.");
+            throw new NullPointerException("No parent inventory.");
 
         parent.setOpened(null);
-
-        this.getManager().open(player, parent);
+        parent.open(player);
     }
 
-    default void open(Player player, EasyInventory inventory) {
+    default void open(Player player, TreeInventory inventory) {
 
-        this.getManager().open(player, inventory);
+        inventory.open(player);
+        inventory.setParent(this);
+
         this.setOpened(inventory);
     }
 }

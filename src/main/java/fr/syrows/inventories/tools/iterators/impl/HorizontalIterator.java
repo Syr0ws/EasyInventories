@@ -1,13 +1,13 @@
 package fr.syrows.inventories.tools.iterators.impl;
 
-import fr.syrows.inventories.interfaces.EasyInventory;
+import fr.syrows.inventories.interfaces.AdvancedInventory;
 import fr.syrows.inventories.tools.iterators.SlotIterator;
 
 import java.util.NoSuchElementException;
 
 public class HorizontalIterator extends SlotIterator {
 
-    public HorizontalIterator(EasyInventory inventory, int beginRow, int beginColumn, int endRow, int endColumn) {
+    public HorizontalIterator(AdvancedInventory inventory, int beginRow, int beginColumn, int endRow, int endColumn) {
         super(inventory, beginRow, beginColumn, endRow, endColumn);
     }
 

@@ -1,24 +1,27 @@
-package fr.syrows.inventories.contents;
+package fr.syrows.inventories.contents.impl;
 
+import fr.syrows.inventories.contents.InventoryContents;
 import fr.syrows.inventories.contents.items.ClickableItem;
 import fr.syrows.inventories.contents.items.PageItem;
-import fr.syrows.inventories.interfaces.PageableInventory;
 import fr.syrows.inventories.tools.pagination.PaginationSettings;
-import fr.syrows.inventories.tools.slots.SlotValidator;
+import fr.syrows.inventories.interfaces.PageableInventory;
 
 import java.util.List;
 
-public class PageableContents<T> extends InventoryContents<PageableInventory<T>> {
+public class PageableContents<T> extends InventoryContents {
+
+    private PageableInventory<T> inventory;
 
     public PageableContents(PageableInventory<T> inventory) {
         super(inventory);
+        this.inventory = inventory;
     }
 
     public void updatePageContents() {
 
-        PageableInventory<T> inventory = super.getInventory();
+        PageableInventory<T> inventory = this.getInventory();
 
-        PaginationSettings settings = super.getInventory().getSettings();
+        PaginationSettings settings = inventory.getSettings();
 
         int begin = settings.getBeginSlot(), end = settings.getEndSlot();
 
@@ -32,7 +35,7 @@ public class PageableContents<T> extends InventoryContents<PageableInventory<T>>
 
                 T element = elements.get(index);
 
-                item = super.getInventory().getPageItem(element);
+                item = inventory.getPageItem(element);
 
             } else item = null;
 
@@ -42,11 +45,11 @@ public class PageableContents<T> extends InventoryContents<PageableInventory<T>>
 
     public void updatePageContent(int slot) {
 
-        PageableInventory<T> inventory = super.getInventory();
+        PageableInventory<T> inventory = this.getInventory();
 
-        SlotValidator.validateSlot(inventory, slot);
+        // SlotValidator.validateSlot(inventory, slot);
 
-        PaginationSettings settings = super.getInventory().getSettings();
+        PaginationSettings settings = inventory.getSettings();
 
         if(!this.isPageSlot(slot))
             throw new IllegalArgumentException(String.format("Slot %d is not a pageable slot.", slot));
@@ -62,13 +65,23 @@ public class PageableContents<T> extends InventoryContents<PageableInventory<T>>
 
     public void updatePageItems() {
 
-        PageableInventory<T> inventory = super.getInventory();
+        PageableInventory<T> inventory = this.getInventory();
 
         PageItem previous = inventory.getPreviousPage(), next = inventory.getNextPage();
         ClickableItem previousItem = previous.getItem(), nextItem = next.getItem();
 
+        previousItem.update();
+        nextItem.update();
+
         super.setItem(previous.getSlot(), previousItem);
         super.setItem(next.getSlot(), nextItem);
+    }
+
+    private boolean isPageSlot(int slot) {
+
+        PaginationSettings settings = this.getInventory().getSettings();
+
+        return slot >= settings.getBeginSlot() && slot <= settings.getEndSlot();
     }
 
     @Override
@@ -80,10 +93,8 @@ public class PageableContents<T> extends InventoryContents<PageableInventory<T>>
         super.refresh();
     }
 
-    private boolean isPageSlot(int slot) {
-
-        PaginationSettings settings = super.getInventory().getSettings();
-
-        return slot >= settings.getBeginSlot() && slot <= settings.getEndSlot();
+    @Override
+    public PageableInventory<T> getInventory() {
+        return this.inventory;
     }
 }

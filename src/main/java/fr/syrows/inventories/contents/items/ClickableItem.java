@@ -14,14 +14,7 @@ public class ClickableItem {
     private Consumer<InventoryClickEvent> consumer;
     private Updater<ClickableItem> updater;
 
-    private ClickableItem(Builder builder) {
-
-        this.id = builder.id;
-        this.item = builder.item;
-
-        this.consumer = builder.consumer;
-        this.updater = builder.updater;
-    }
+    private ClickableItem() {}
 
     public String getId() {
         return this.id;
@@ -29,6 +22,14 @@ public class ClickableItem {
 
     public ItemStack getItemStack() {
         return this.item;
+    }
+
+    public void setItemStack(ItemStack item) {
+
+        if(item == null)
+            throw new IllegalArgumentException("ItemStack cannot be null.");
+
+        this.item = item;
     }
 
     public boolean hasConsumer() {
@@ -79,7 +80,19 @@ public class ClickableItem {
         }
 
         public ClickableItem build() {
-            return new ClickableItem(this);
+
+            ClickableItem item = new ClickableItem();
+
+            if(this.id == null)
+                throw new NullPointerException("ID cannot be null.");
+
+            item.setItemStack(this.item);
+            item.id = this.id;
+
+            item.consumer = this.consumer;
+            item.updater = this.updater;
+
+            return item;
         }
     }
 }

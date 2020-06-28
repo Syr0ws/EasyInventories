@@ -1,9 +1,9 @@
 package fr.syrows.inventories.builders;
 
 import fr.syrows.inventories.InventorySort;
-import fr.syrows.inventories.interfaces.EasyInventory;
+import fr.syrows.inventories.interfaces.AdvancedInventory;
 
-public interface AbstractBuilder<SELF, T extends EasyInventory> {
+public interface AbstractBuilder<SELF, T extends AdvancedInventory> {
 
     SELF withIdentifier(String identifier);
 

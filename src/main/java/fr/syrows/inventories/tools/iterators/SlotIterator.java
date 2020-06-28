@@ -2,28 +2,27 @@ package fr.syrows.inventories.tools.iterators;
 
 import fr.syrows.inventories.InventorySort;
 import fr.syrows.inventories.contents.items.ClickableItem;
-import fr.syrows.inventories.interfaces.EasyInventory;
-import fr.syrows.inventories.tools.slots.SlotValidator;
-import fr.syrows.utils.SlotUtils;
+import fr.syrows.inventories.utils.SlotUtils;
+import fr.syrows.inventories.interfaces.AdvancedInventory;
 
 import java.util.Optional;
 
 public abstract class SlotIterator {
 
-    private EasyInventory inventory;
+    private AdvancedInventory inventory;
     private int beginRow, beginColumn, endRow, endColumn;
 
     protected int row, column;
 
-    public SlotIterator(EasyInventory inventory, int beginRow, int beginColumn, int endRow, int endColumn) {
+    public SlotIterator(AdvancedInventory inventory, int beginRow, int beginColumn, int endRow, int endColumn) {
 
         this.inventory = inventory;
 
-        SlotValidator.validateRow(inventory, beginRow);
-        SlotValidator.validateRow(inventory, endRow);
+        // SlotValidator.validateRow(inventory, beginRow);
+        // SlotValidator.validateRow(inventory, endRow);
 
-        SlotValidator.validateColumn(inventory, beginColumn);
-        SlotValidator.validateColumn(inventory, endColumn);
+        // SlotValidator.validateColumn(inventory, beginColumn);
+        // SlotValidator.validateColumn(inventory, endColumn);
 
         this.beginRow = beginRow - 1;
         this.beginColumn = beginColumn - 1;
@@ -63,7 +62,7 @@ public abstract class SlotIterator {
         return new Slot(row + 1, column + 1);
     }
 
-    public EasyInventory getInventory() {
+    public AdvancedInventory getInventory() {
         return this.inventory;
     }
 

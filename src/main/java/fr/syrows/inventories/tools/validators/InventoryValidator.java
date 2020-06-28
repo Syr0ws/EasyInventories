@@ -1,9 +1,9 @@
-package fr.syrows.inventories.builders.tools;
+package fr.syrows.inventories.tools.validators;
 
 import fr.syrows.inventories.InventorySort;
-import fr.syrows.inventories.interfaces.EasyInventory;
+import fr.syrows.inventories.interfaces.AdvancedInventory;
 
-public class BuilderValidator {
+public class InventoryValidator {
 
     public static void validateIdentifier(String identifier) {
 
@@ -23,10 +23,10 @@ public class BuilderValidator {
             throw new IllegalArgumentException(String.format("Size %d is invalid for the type '%s'.", size, sort.name()));
     }
 
-    public static void validateInventory(EasyInventory inventory) {
+    public static void validateInventory(AdvancedInventory inventory) {
 
-        BuilderValidator.validateIdentifier(inventory.getIdentifier());
-        BuilderValidator.validateTitle(inventory.getTitle());
-        BuilderValidator.validateSize(inventory.getSort(), inventory.getSize());
+        InventoryValidator.validateIdentifier(inventory.getIdentifier());
+        InventoryValidator.validateTitle(inventory.getTitle());
+        InventoryValidator.validateSize(inventory.getSort(), inventory.getSize());
     }
 }

@@ -1,4 +1,4 @@
-package fr.syrows.utils;
+package fr.syrows.inventories.utils;
 
 import fr.syrows.inventories.InventorySort;
 
