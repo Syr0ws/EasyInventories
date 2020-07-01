@@ -1,25 +1,31 @@
 package fr.syrows.easyinventories.tools.validators;
 
-import fr.syrows.easyinventories.exceptions.InvalidSlotException;
-import fr.syrows.easyinventories.inventories.AdvancedInventory;
+import fr.syrows.easyinventories.exceptions.InvalidPositionException;
+import fr.syrows.easyinventories.inventories.SimpleInventory;
 
 public class SlotValidator {
 
-    public static void validateRow(AdvancedInventory inventory, int row) {
+    public static void validateRow(SimpleInventory inventory, int row) {
 
         if(row <= 0 || row > inventory.getRows())
-            throw new InvalidSlotException(String.format("Row %d is invalid.", row));
+            throw new InvalidPositionException(String.format("Row %d is invalid.", row), row);
     }
 
-    public static void validateColumn(AdvancedInventory inventory, int column) {
+    public static void validateColumn(SimpleInventory inventory, int column) {
 
         if(column <= 0 || column > inventory.getColumns())
-            throw new InvalidSlotException(String.format("Column %d is invalid.", column));
+            throw new InvalidPositionException(String.format("Column %d is invalid.", column), column);
     }
 
-    public static void validateSlot(AdvancedInventory inventory, int slot) {
+    public static void validateSlot(SimpleInventory inventory, int slot) {
 
         if(slot < 0 || slot >= inventory.getSize())
-            throw new InvalidSlotException(String.format("Slot %d is invalid.", slot));
+            throw new InvalidPositionException(String.format("Slot %d is invalid.", slot), slot);
+    }
+
+    public static void validatePosition(SimpleInventory inventory, int row, int column) {
+
+        SlotValidator.validateRow(inventory, row);
+        SlotValidator.validateColumn(inventory, column);
     }
 }

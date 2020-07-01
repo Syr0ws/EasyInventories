@@ -2,7 +2,7 @@ package fr.syrows.easyinventories.inventories;
 
 import org.bukkit.entity.Player;
 
-public interface TreeInventory extends AdvancedInventory {
+public interface TreeInventory extends SimpleInventory {
 
     TreeInventory getParent();
 

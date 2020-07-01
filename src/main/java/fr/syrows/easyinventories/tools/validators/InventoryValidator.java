@@ -1,7 +1,7 @@
 package fr.syrows.easyinventories.tools.validators;
 
-import fr.syrows.easyinventories.contents.InventorySort;
-import fr.syrows.easyinventories.inventories.AdvancedInventory;
+import fr.syrows.easyinventories.contents.ContainerType;
+import fr.syrows.easyinventories.inventories.SimpleInventory;
 
 public class InventoryValidator {
 
@@ -17,16 +17,16 @@ public class InventoryValidator {
             throw new IllegalArgumentException("Title length must be lower than 32 characters.");
     }
 
-    public static void validateSize(InventorySort sort, int size) {
+    public static void validateSize(ContainerType sort, int size) {
 
         if(!sort.isValid(size))
             throw new IllegalArgumentException(String.format("Size %d is invalid for the type '%s'.", size, sort.name()));
     }
 
-    public static void validateInventory(AdvancedInventory inventory) {
+    public static void validateInventory(SimpleInventory inventory) {
 
         InventoryValidator.validateIdentifier(inventory.getIdentifier());
         InventoryValidator.validateTitle(inventory.getTitle());
-        InventoryValidator.validateSize(inventory.getSort(), inventory.getSize());
+        InventoryValidator.validateSize(inventory.getType(), inventory.getSize());
     }
 }

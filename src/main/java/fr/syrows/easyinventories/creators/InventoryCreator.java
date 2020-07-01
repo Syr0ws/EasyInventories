@@ -1,12 +1,12 @@
 package fr.syrows.easyinventories.creators;
 
-import fr.syrows.easyinventories.contents.InventorySort;
-import fr.syrows.easyinventories.inventories.AdvancedInventory;
+import fr.syrows.easyinventories.contents.ContainerType;
+import fr.syrows.easyinventories.inventories.SimpleInventory;
 import org.bukkit.inventory.Inventory;
 
 public interface InventoryCreator {
 
-    Inventory getInventory(AdvancedInventory inventory);
+    Inventory getInventory(SimpleInventory inventory);
 
-    boolean isSupported(InventorySort sort);
+    boolean isSupported(ContainerType sort);
 }

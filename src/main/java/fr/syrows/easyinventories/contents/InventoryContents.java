@@ -1,7 +1,8 @@
 package fr.syrows.easyinventories.contents;
 
 import fr.syrows.easyinventories.contents.items.ClickableItem;
-import fr.syrows.easyinventories.inventories.AdvancedInventory;
+import fr.syrows.easyinventories.inventories.SimpleInventory;
+import fr.syrows.easyinventories.tools.validators.SlotValidator;
 import fr.syrows.easyinventories.utils.SlotUtils;
 import org.bukkit.inventory.ItemStack;
 
@@ -12,23 +13,23 @@ public abstract class InventoryContents {
 
     private ClickableItem[][] contents;
 
-    public InventoryContents(AdvancedInventory inventory) {
+    public InventoryContents(SimpleInventory inventory) {
 
         int rows = inventory.getRows(), columns = inventory.getColumns();
 
         this.contents = new ClickableItem[rows][columns];
     }
 
-    public abstract AdvancedInventory getInventory();
+    public abstract SimpleInventory getInventory();
 
     public void setItem(int slot, ClickableItem item) {
 
-        AdvancedInventory inventory = this.getInventory();
+        SimpleInventory inventory = this.getInventory();
 
-        // SlotValidator.validateSlot(this.inventory, slot);
+        SlotValidator.validateSlot(inventory, slot);
 
-        int row = SlotUtils.getRow(inventory.getSort(), slot);
-        int column = SlotUtils.getColumn(inventory.getSort(), slot);
+        int row = SlotUtils.getRow(inventory.getType(), slot);
+        int column = SlotUtils.getColumn(inventory.getType(), slot);
 
         this.contents[row][column] = item;
         this.update(slot);
@@ -36,8 +37,7 @@ public abstract class InventoryContents {
 
     public void setItem(int row, int column, ClickableItem item) {
 
-        // SlotValidator.validateRow(this.inventory, row);
-        // SlotValidator.validateColumn(this.inventory, column);
+        SlotValidator.validatePosition(this.getInventory(), row, column);
 
         this.contents[row - 1][column - 1] = item;
         this.update(row, column);
@@ -53,12 +53,12 @@ public abstract class InventoryContents {
 
     public Optional<ClickableItem> getItem(int slot) {
 
-        AdvancedInventory inventory = this.getInventory();
+        SimpleInventory inventory = this.getInventory();
 
-        // SlotValidator.validateSlot(this.inventory, slot);
+        SlotValidator.validateSlot(inventory, slot);
 
-        int row = SlotUtils.getRow(inventory.getSort(), slot);
-        int column = SlotUtils.getColumn(inventory.getSort(), slot);
+        int row = SlotUtils.getRow(inventory.getType(), slot);
+        int column = SlotUtils.getColumn(inventory.getType(), slot);
 
         ClickableItem item = this.contents[row][column];
 
@@ -67,8 +67,7 @@ public abstract class InventoryContents {
 
     public Optional<ClickableItem> getItem(int row, int column) {
 
-        // SlotValidator.validateRow(this.inventory, row);
-        // SlotValidator.validateColumn(this.inventory, column);
+        SlotValidator.validatePosition(this.getInventory(), row, column);
 
         ClickableItem item =  this.contents[row - 1][column - 1];
 
@@ -77,7 +76,7 @@ public abstract class InventoryContents {
 
     private void update(int slot) {
 
-        AdvancedInventory inventory = this.getInventory();
+        SimpleInventory inventory = this.getInventory();
 
         Optional<ClickableItem> optional = this.getItem(slot);
         ItemStack stack = optional.map(ClickableItem::getItemStack).orElse(null);
@@ -87,9 +86,9 @@ public abstract class InventoryContents {
 
     private void update(int row, int column) {
 
-        AdvancedInventory inventory = this.getInventory();
+        SimpleInventory inventory = this.getInventory();
 
-        int slot = SlotUtils.getSlot(inventory.getSort(), row, column);
+        int slot = SlotUtils.getSlot(inventory.getType(), row, column);
 
         Optional<ClickableItem> optional = this.getItem(slot);
 

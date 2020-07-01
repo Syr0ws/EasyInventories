@@ -9,7 +9,6 @@ public class EasyInventoriesPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
         this.inventoryManager = new InventoryManager(this);
     }
 

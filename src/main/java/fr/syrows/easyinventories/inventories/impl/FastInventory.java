@@ -3,15 +3,15 @@ package fr.syrows.easyinventories.inventories.impl;
 import fr.syrows.easyinventories.builders.InventoryBuilder;
 import fr.syrows.easyinventories.contents.InventoryContents;
 import fr.syrows.easyinventories.contents.InventoryManager;
-import fr.syrows.easyinventories.contents.InventorySort;
+import fr.syrows.easyinventories.contents.ContainerType;
 import fr.syrows.easyinventories.contents.impl.DefaultContents;
-import fr.syrows.easyinventories.inventories.AdvancedInventory;
+import fr.syrows.easyinventories.inventories.SimpleInventory;
 import org.bukkit.inventory.Inventory;
 
-public class FastInventory extends EasyInventory implements AdvancedInventory {
+public class FastInventory extends EasyInventory implements SimpleInventory {
 
     private String identifier, title;
-    private InventorySort sort;
+    private ContainerType sort;
     private int size;
 
     private InventoryContents contents;
@@ -39,7 +39,7 @@ public class FastInventory extends EasyInventory implements AdvancedInventory {
     }
 
     @Override
-    public InventorySort getSort() {
+    public ContainerType getType() {
         return this.sort;
     }
 

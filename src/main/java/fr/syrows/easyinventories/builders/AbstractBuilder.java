@@ -1,9 +1,9 @@
 package fr.syrows.easyinventories.builders;
 
-import fr.syrows.easyinventories.contents.InventorySort;
-import fr.syrows.easyinventories.inventories.AdvancedInventory;
+import fr.syrows.easyinventories.contents.ContainerType;
+import fr.syrows.easyinventories.inventories.SimpleInventory;
 
-public interface AbstractBuilder<SELF, T extends AdvancedInventory> {
+public interface AbstractBuilder<SELF, T extends SimpleInventory> {
 
     SELF withIdentifier(String identifier);
 
@@ -11,7 +11,7 @@ public interface AbstractBuilder<SELF, T extends AdvancedInventory> {
 
     SELF withSize(int size);
 
-    SELF withSort(InventorySort sort);
+    SELF withSort(ContainerType sort);
 
     T build();
 }

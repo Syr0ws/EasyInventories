@@ -1,32 +1,37 @@
 package fr.syrows.easyinventories.inventories.impl;
 
 import fr.syrows.easyinventories.contents.InventoryManager;
-import fr.syrows.easyinventories.inventories.AdvancedInventory;
-import fr.syrows.easyinventories.listeners.InventoryListener;
-import org.bukkit.event.inventory.InventoryEvent;
+import fr.syrows.easyinventories.inventories.SimpleInventory;
+import fr.syrows.easyinventories.listeners.InventoryListenerManager;
+import fr.syrows.easyinventories.utils.SlotUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+public abstract class EasyInventory implements SimpleInventory {
 
-public abstract class EasyInventory implements AdvancedInventory {
-
-    private InventoryManager manager;
-
-    private List<InventoryListener<? extends InventoryEvent>> listeners;
+    private InventoryManager inventoryManager;
+    private InventoryListenerManager listenerManager;
 
     public EasyInventory(InventoryManager manager) {
-
-        this.manager = manager;
-        this.listeners = new ArrayList<>();
+        this.inventoryManager = manager;
+        this.listenerManager = new InventoryListenerManager();
     }
 
     @Override
-    public InventoryManager getManager() {
-        return this.manager;
+    public int getRows() {
+        return SlotUtils.getRow(this.getType(), this.getSize());
     }
 
     @Override
-    public List<InventoryListener<? extends InventoryEvent>> getListeners() {
-        return this.listeners;
+    public int getColumns() {
+        return getType().getColumns();
+    }
+
+    @Override
+    public InventoryManager getInventoryManager() {
+        return this.inventoryManager;
+    }
+
+    @Override
+    public InventoryListenerManager getListenerManager() {
+        return this.listenerManager;
     }
 }

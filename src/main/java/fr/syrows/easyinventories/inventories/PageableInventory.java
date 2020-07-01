@@ -8,17 +8,17 @@ import fr.syrows.easyinventories.tools.pagination.Pagination;
 import fr.syrows.easyinventories.tools.pagination.PaginationSettings;
 import org.bukkit.entity.Player;
 
-public interface PageableInventory<T> extends AdvancedInventory {
+public interface PageableInventory<T> extends SimpleInventory {
 
     PageItem getNextPage();
 
     PageItem getPreviousPage();
 
+    PaginationSettings getSettings();
+
     Pagination<T> getPagination();
 
     Pagination<T>.Page getOpenedPage();
-
-    PaginationSettings getSettings();
 
     ClickableItem getPageItem(T element);
 
@@ -58,6 +58,6 @@ public interface PageableInventory<T> extends AdvancedInventory {
 
         PageableInventoryOpener<T> opener = new PageableInventoryOpener<>();
 
-        this.getManager().open(player, this, opener);
+        this.getInventoryManager().open(player, this, opener);
     }
 }

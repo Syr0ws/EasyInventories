@@ -5,23 +5,29 @@ import fr.syrows.easyinventories.utils.Utils;
 import fr.syrows.easyinventories.creators.InventoryCreator;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
 import org.bukkit.Bukkit;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 
-public class ChestInventoryCreator implements InventoryCreator {
+import java.util.Arrays;
+import java.util.List;
+
+import static fr.syrows.easyinventories.contents.ContainerType.*;
+
+public class CommonInventoryCreator implements InventoryCreator {
+
+    private static final List<ContainerType> supported = Arrays.asList(ENDER_CHEST, SHULKER_BOX, DROPPER, DISPENSER, HOPPER);
 
     @Override
     public Inventory getInventory(SimpleInventory inventory) {
 
         String title = Utils.parseColors(inventory.getTitle());
 
-        int size = inventory.getSize();
+        ContainerType sort = inventory.getType();
 
-        return Bukkit.createInventory(null, size, title);
+        return Bukkit.createInventory(null, sort.getType(), title);
     }
 
     @Override
     public boolean isSupported(ContainerType sort) {
-        return sort.getType() == InventoryType.CHEST;
+        return CommonInventoryCreator.supported.contains(sort);
     }
 }

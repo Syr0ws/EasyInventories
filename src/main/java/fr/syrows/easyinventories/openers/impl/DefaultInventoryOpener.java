@@ -1,14 +1,16 @@
 package fr.syrows.easyinventories.openers.impl;
 
-import fr.syrows.easyinventories.inventories.AdvancedInventory;
+import fr.syrows.easyinventories.inventories.SimpleInventory;
 import fr.syrows.easyinventories.openers.InventoryOpener;
 import fr.syrows.easyinventories.tools.validators.InventoryValidator;
 import org.bukkit.entity.Player;
 
-public class DefaultOpener implements InventoryOpener<AdvancedInventory> {
+public class DefaultInventoryOpener implements InventoryOpener<SimpleInventory> {
+
+    public static final DefaultInventoryOpener INSTANCE = new DefaultInventoryOpener();
 
     @Override
-    public void open(Player player, AdvancedInventory inventory) {
+    public void open(Player player, SimpleInventory inventory) {
 
         InventoryValidator.validateInventory(inventory);
 

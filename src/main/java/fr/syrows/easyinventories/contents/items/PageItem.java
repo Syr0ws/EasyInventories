@@ -33,7 +33,7 @@ public class PageItem {
         this.container = container;
         this.type = type;
         this.stack = stack;
-        this.slot = SlotUtils.getSlot(container.getSort(), row, column);
+        this.slot = SlotUtils.getSlot(container.getType(), row, column);
     }
 
     public ClickableItem getItem() {

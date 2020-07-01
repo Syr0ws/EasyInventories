@@ -1,17 +1,17 @@
 package fr.syrows.easyinventories.tools.iterators.impl;
 
-import fr.syrows.easyinventories.inventories.AdvancedInventory;
+import fr.syrows.easyinventories.inventories.SimpleInventory;
 import fr.syrows.easyinventories.tools.iterators.SlotIterator;
 
 import java.util.NoSuchElementException;
 
 public class HorizontalIterator extends SlotIterator {
 
-    public HorizontalIterator(AdvancedInventory inventory, int beginRow, int beginColumn, int endRow, int endColumn) {
+    public HorizontalIterator(SimpleInventory inventory, int beginRow, int beginColumn, int endRow, int endColumn) {
         super(inventory, beginRow, beginColumn, endRow, endColumn);
     }
 
-    public HorizontalIterator(AdvancedInventory inventory, int beginRow, int beginColumn, int endRow, int endColumn, int[] blacklisted) {
+    public HorizontalIterator(SimpleInventory inventory, int beginRow, int beginColumn, int endRow, int endColumn, int[] blacklisted) {
         super(inventory, beginRow, beginColumn, endRow, endColumn, blacklisted);
     }
 

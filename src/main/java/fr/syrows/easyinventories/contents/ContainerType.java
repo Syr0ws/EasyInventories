@@ -4,14 +4,19 @@ import org.bukkit.event.inventory.InventoryType;
 
 import java.util.Arrays;
 
-public enum InventorySort {
+public enum ContainerType {
 
-    CHEST(9, 9, 18, 27, 36, 45, 54), DROPPER(3), DISPENSER(3), HOPPER(5);
+    CHEST(9, 9, 18, 27, 36, 45, 54),
+    ENDER_CHEST(9),
+    SHULKER_BOX(9),
+    DROPPER(3),
+    DISPENSER(3),
+    HOPPER(5);
 
     private int columns;
     private int[] sizes;
 
-    InventorySort(int columns, int... sizes) {
+    ContainerType(int columns, int... sizes) {
 
         if(sizes.length == 0) sizes = new int[]{this.getType().getDefaultSize()};
 

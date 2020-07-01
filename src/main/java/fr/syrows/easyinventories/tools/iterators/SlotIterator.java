@@ -1,30 +1,28 @@
 package fr.syrows.easyinventories.tools.iterators;
 
-import fr.syrows.easyinventories.contents.InventorySort;
+import fr.syrows.easyinventories.contents.ContainerType;
 import fr.syrows.easyinventories.contents.items.ClickableItem;
 import fr.syrows.easyinventories.tools.validators.SlotValidator;
 import fr.syrows.easyinventories.utils.SlotUtils;
-import fr.syrows.easyinventories.inventories.AdvancedInventory;
+import fr.syrows.easyinventories.inventories.SimpleInventory;
 
 import java.util.Optional;
 
 public abstract class SlotIterator {
 
-    private AdvancedInventory inventory;
-    private int beginRow, beginColumn, endRow, endColumn;
+    private SimpleInventory inventory;
+    private int beginRow, beginColumn;
+    private int endRow, endColumn;
     private int[] blacklisted;
 
     protected int row, column;
 
-    public SlotIterator(AdvancedInventory inventory, int beginRow, int beginColumn, int endRow, int endColumn) {
+    public SlotIterator(SimpleInventory inventory, int beginRow, int beginColumn, int endRow, int endColumn) {
 
-        this.inventory = inventory;
+        SlotValidator.validatePosition(inventory, beginRow, beginColumn);
+        SlotValidator.validatePosition(inventory, endRow, endColumn);
 
-        SlotValidator.validateRow(inventory, beginRow);
-        SlotValidator.validateRow(inventory, endRow);
-
-        SlotValidator.validateColumn(inventory, beginColumn);
-        SlotValidator.validateColumn(inventory, endColumn);
+        this.inventory = inventory; // Was in first position, before validations.
 
         this.beginRow = beginRow - 1;
         this.beginColumn = beginColumn - 1;
@@ -37,7 +35,7 @@ public abstract class SlotIterator {
         this.start();
     }
 
-    public SlotIterator(AdvancedInventory inventory, int beginRow, int beginColumn, int endRow, int endColumn, int[] blacklisted) {
+    public SlotIterator(SimpleInventory inventory, int beginRow, int beginColumn, int endRow, int endColumn, int[] blacklisted) {
         this(inventory, beginRow, beginColumn, endRow, endColumn);
 
         this.blacklisted = blacklisted;
@@ -80,7 +78,7 @@ public abstract class SlotIterator {
         return new Slot(row + 1, column + 1);
     }
 
-    public AdvancedInventory getInventory() {
+    public SimpleInventory getInventory() {
         return this.inventory;
     }
 
@@ -132,7 +130,7 @@ public abstract class SlotIterator {
 
         public int getSlot() {
 
-            InventorySort sort = SlotIterator.this.inventory.getSort();
+            ContainerType sort = SlotIterator.this.inventory.getType();
 
             return SlotUtils.getSlot(sort, this.row, this.column);
         }
