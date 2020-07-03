@@ -1,6 +1,6 @@
 package fr.syrows.easyinventories.listeners;
 
-import org.bukkit.event.inventory.InventoryEvent;
+import fr.syrows.easyinventories.events.InventoryEvent;
 
 import java.util.ArrayList;
 import java.util.List;

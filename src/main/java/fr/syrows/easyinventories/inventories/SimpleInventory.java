@@ -5,6 +5,7 @@ import fr.syrows.easyinventories.contents.InventoryContents;
 import fr.syrows.easyinventories.contents.InventoryManager;
 import fr.syrows.easyinventories.listeners.InventoryListenerManager;
 import fr.syrows.easyinventories.openers.impl.DefaultInventoryOpener;
+import fr.syrows.easyinventories.tools.CloseReason;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -34,7 +35,7 @@ public interface SimpleInventory {
         this.getInventoryManager().open(player, this, DefaultInventoryOpener.INSTANCE);
     }
 
-    default void close(Player player) {
-        this.getInventoryManager().close(player);
+    default void close(Player player, CloseReason reason) {
+        this.getInventoryManager().close(player, reason);
     }
 }

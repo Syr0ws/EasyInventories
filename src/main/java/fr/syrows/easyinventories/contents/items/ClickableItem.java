@@ -1,7 +1,7 @@
 package fr.syrows.easyinventories.contents.items;
 
+import fr.syrows.easyinventories.events.InventoryClickEvent;
 import fr.syrows.easyinventories.tools.Updater;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;

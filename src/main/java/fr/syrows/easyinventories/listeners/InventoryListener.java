@@ -1,7 +1,6 @@
 package fr.syrows.easyinventories.listeners;
 
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.inventory.InventoryEvent;
+import fr.syrows.easyinventories.events.InventoryEvent;
 
 import java.util.function.Consumer;
 
@@ -9,7 +8,6 @@ public class InventoryListener<T extends InventoryEvent> {
 
     private Class<T> type;
     private Consumer<T> consumer;
-    private EventPriority priority;
 
     public InventoryListener(Class<T> type, Consumer<T> consumer) {
         this.type = type;

@@ -4,8 +4,10 @@ import fr.syrows.easyinventories.contents.items.ClickableItem;
 import fr.syrows.easyinventories.creators.InventoryCreator;
 import fr.syrows.easyinventories.creators.impl.ChestInventoryCreator;
 import fr.syrows.easyinventories.creators.impl.CommonInventoryCreator;
+import fr.syrows.easyinventories.events.InventoryOpenEvent;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
 import fr.syrows.easyinventories.openers.InventoryOpener;
+import fr.syrows.easyinventories.tools.CloseReason;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -63,20 +65,30 @@ public class InventoryManager {
         if(inventory.getInventory() == null)
             throw new NullPointerException("Bukkit inventory is null. Create it first.");
 
-        if(this.hasOpenedInventory(player)) this.close(player);
+        if(this.hasOpenedInventory(player)) this.close(player, CloseReason.CLOSE_ALL);
 
         opener.open(player, inventory);
+
+        InventoryOpenEvent event = new InventoryOpenEvent(player, inventory);
+
+        inventory.getListenerManager().accept(event);
 
         this.inventories.put(player, inventory);
     }
 
-    public void close(Player player) {
+    public void close(Player player, CloseReason reason) {
 
         if(!this.hasOpenedInventory(player)) return;
 
-        player.closeInventory();
+        SimpleInventory inventory = this.getOpenedInventory(player);
+
+        fr.syrows.easyinventories.events.InventoryCloseEvent event = new fr.syrows.easyinventories.events.InventoryCloseEvent(player, inventory, reason);
+
+        inventory.getListenerManager().accept(event);
 
         this.inventories.remove(player);
+
+        player.closeInventory();
     }
 
     public boolean hasOpenedInventory(Player player) {
@@ -132,11 +144,12 @@ public class InventoryManager {
 
                 InventoryContents contents = inventory.getContents();
 
+                fr.syrows.easyinventories.events.InventoryClickEvent customEvent = new fr.syrows.easyinventories.events.InventoryClickEvent(event, inventory);
+
                 Optional<ClickableItem> optional = contents.getItem(event.getSlot());
+                optional.ifPresent(clickableItem -> clickableItem.accept(customEvent));
 
-                optional.ifPresent(clickableItem -> clickableItem.accept(event));
-
-                inventory.getListenerManager().accept(event);
+                inventory.getListenerManager().accept(customEvent);
 
             } else event.setCancelled(this.toCancel.contains(event.getAction()));
         }
@@ -146,12 +159,8 @@ public class InventoryManager {
 
             Player player = (Player) event.getPlayer();
 
-            if(!InventoryManager.this.hasOpenedInventory(player)) return;
-
-            SimpleInventory inventory = InventoryManager.this.getOpenedInventory(player);
-            inventory.getListenerManager().accept(event);
-
-            InventoryManager.this.inventories.remove(player);
+            if(InventoryManager.this.hasOpenedInventory(player))
+                InventoryManager.this.close(player, CloseReason.CLOSE_ALL);
         }
 
         @EventHandler
@@ -179,7 +188,7 @@ public class InventoryManager {
 
             if(!InventoryManager.this.hasOpenedInventory(player)) return;
 
-            InventoryManager.this.close(player);
+            InventoryManager.this.close(player, CloseReason.CLOSE_ALL);
         }
 
         @EventHandler
@@ -189,7 +198,7 @@ public class InventoryManager {
 
             ArrayList<Player> viewers = InventoryManager.this.getAllViewers();
 
-            viewers.forEach(InventoryManager.this::close);
+            viewers.forEach(viewer -> InventoryManager.this.close(viewer, CloseReason.CLOSE_ALL));
         }
     }
 }
