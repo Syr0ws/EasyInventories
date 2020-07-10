@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class InventoryCloseEvent extends Event implements InventoryEvent {
+public class SimpleInventoryCloseEvent extends Event implements SimpleInventoryEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
@@ -14,7 +14,7 @@ public class InventoryCloseEvent extends Event implements InventoryEvent {
     private SimpleInventory inventory;
     private CloseReason reason;
 
-    public InventoryCloseEvent(Player player, SimpleInventory inventory, CloseReason reason) {
+    public SimpleInventoryCloseEvent(Player player, SimpleInventory inventory, CloseReason reason) {
         this.player = player;
         this.inventory = inventory;
         this.reason = reason;

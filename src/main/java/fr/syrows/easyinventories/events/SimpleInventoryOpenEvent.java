@@ -1,17 +1,24 @@
 package fr.syrows.easyinventories.events;
 
 import fr.syrows.easyinventories.inventories.SimpleInventory;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class InventoryClickEvent extends org.bukkit.event.inventory.InventoryClickEvent implements InventoryEvent {
+public class SimpleInventoryOpenEvent extends Event implements SimpleInventoryEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
+    private Player player;
     private SimpleInventory inventory;
 
-    public InventoryClickEvent(org.bukkit.event.inventory.InventoryClickEvent event, SimpleInventory inventory) {
-        super(event.getView(), event.getSlotType(), event.getSlot(), event.getClick(), event.getAction());
+    public SimpleInventoryOpenEvent(Player player, SimpleInventory inventory) {
+        this.player = player;
         this.inventory = inventory;
+    }
+
+    public Player getPlayer() {
+        return this.player;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package fr.syrows.easyinventories.configs.tools;
 
+import fr.syrows.easyinventories.tools.StringParser;
+import fr.syrows.easyinventories.utils.ItemUtils;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryItem {
@@ -18,6 +20,10 @@ public class InventoryItem {
 
     public ItemStack getItemStack() {
         return this.stack;
+    }
+
+    public ItemStack getItemStack(StringParser parser) {
+        return ItemUtils.parse(this.stack, parser);
     }
 
     public int[] getSlots() {

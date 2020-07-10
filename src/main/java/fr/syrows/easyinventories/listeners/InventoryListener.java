@@ -1,10 +1,10 @@
 package fr.syrows.easyinventories.listeners;
 
-import fr.syrows.easyinventories.events.InventoryEvent;
+import fr.syrows.easyinventories.events.SimpleInventoryEvent;
 
 import java.util.function.Consumer;
 
-public class InventoryListener<T extends InventoryEvent> {
+public class InventoryListener<T extends SimpleInventoryEvent> {
 
     private Class<T> type;
     private Consumer<T> consumer;

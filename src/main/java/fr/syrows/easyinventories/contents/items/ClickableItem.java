@@ -1,6 +1,6 @@
 package fr.syrows.easyinventories.contents.items;
 
-import fr.syrows.easyinventories.events.InventoryClickEvent;
+import fr.syrows.easyinventories.events.SimpleInventoryClickEvent;
 import fr.syrows.easyinventories.tools.Updater;
 import org.bukkit.inventory.ItemStack;
 
@@ -11,7 +11,7 @@ public class ClickableItem {
     private String id;
     private ItemStack item;
 
-    private Consumer<InventoryClickEvent> consumer;
+    private Consumer<SimpleInventoryClickEvent> consumer;
     private Updater<ClickableItem> updater;
 
     private ClickableItem() {}
@@ -40,7 +40,7 @@ public class ClickableItem {
         return this.updater != null;
     }
 
-    public void setConsumer(Consumer<InventoryClickEvent> consumer) {
+    public void setConsumer(Consumer<SimpleInventoryClickEvent> consumer) {
         this.consumer = consumer;
     }
 
@@ -48,7 +48,7 @@ public class ClickableItem {
         this.updater = updater;
     }
 
-    public void accept(InventoryClickEvent event) {
+    public void accept(SimpleInventoryClickEvent event) {
         if(this.hasConsumer()) this.consumer.accept(event);
     }
 
@@ -61,7 +61,7 @@ public class ClickableItem {
         private String id;
         private ItemStack item;
 
-        private Consumer<InventoryClickEvent> consumer;
+        private Consumer<SimpleInventoryClickEvent> consumer;
         private Updater<ClickableItem> updater;
 
         public Builder(String id, ItemStack item) {
@@ -69,7 +69,7 @@ public class ClickableItem {
             this.item = item;
         }
 
-        public Builder withClickEvent(Consumer<InventoryClickEvent> consumer) {
+        public Builder withClickEvent(Consumer<SimpleInventoryClickEvent> consumer) {
             this.consumer = consumer;
             return this;
         }

@@ -2,7 +2,7 @@ package fr.syrows.easyinventories.events;
 
 import fr.syrows.easyinventories.inventories.SimpleInventory;
 
-public interface InventoryEvent {
+public interface SimpleInventoryEvent {
 
     SimpleInventory getSimpleInventory();
 }
