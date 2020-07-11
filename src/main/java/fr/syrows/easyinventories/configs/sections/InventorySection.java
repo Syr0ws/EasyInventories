@@ -1,6 +1,7 @@
 package fr.syrows.easyinventories.configs.sections;
 
 import fr.syrows.easyinventories.configs.tools.InventoryItem;
+import fr.syrows.easyinventories.contents.ContainerType;
 import fr.syrows.easyinventories.utils.Utils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -19,9 +20,25 @@ public class InventorySection {
     public String getInventoryTitle() {
 
         if(!this.section.contains("title"))
-            throw new NullPointerException("No inventory title found.");
+            throw new NullPointerException(String.format("Key 'title' not found at '%s'.", this.section.getCurrentPath()));
 
         return this.section.getString("title");
+    }
+
+    public int getInventorySize() {
+
+        if(!this.section.contains("size"))
+            throw new NullPointerException(String.format("Key 'size' not found at '%s'.", this.section.getCurrentPath()));
+
+        return this.section.getInt("size");
+    }
+
+    public ContainerType getContainerType() {
+
+        if(!this.section.contains("type"))
+            throw new NullPointerException(String.format("Key 'type' not found at '%s'.", this.section.getCurrentPath()));
+
+        return ContainerType.valueOf(this.section.getString("type"));
     }
 
     public List<InventoryItem> getInventoryContents() {
@@ -57,7 +74,7 @@ public class InventorySection {
         return new PaginationSection(this.section.getConfigurationSection("pagination"));
     }
 
-    public ConfigurationSection getConfigurationSection() {
+    public ConfigurationSection getAsConfigurationSection() {
         return this.section;
     }
 
