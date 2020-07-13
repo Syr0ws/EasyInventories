@@ -1,4 +1,4 @@
 name: EasyInventories
 author: Syrows
-version: 1.0-ALPHA
-main: fr.syrows.EasyInventoriesPlugin
+version: 0.0.12
+main: fr.syrows.easyinventories.EasyInventoriesPlugin
