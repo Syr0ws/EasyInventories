@@ -127,6 +127,22 @@ public class InventoryManager {
                 .collect(Collectors.toList());
     }
 
+    public List<Player> getViewers(Class<? extends SimpleInventory> clazz) {
+
+        return this.inventories.entrySet().stream()
+                .filter(entry -> entry.getValue().getClass().equals(clazz))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+    }
+
+    public <T extends SimpleInventory> List<T> getInventories(Class<T> clazz) {
+
+        return this.inventories.values().stream()
+                .filter(inventory -> inventory.getClass().equals(clazz))
+                .map(clazz::cast)
+                .collect(Collectors.toList());
+    }
+
     public ArrayList<Player> getAllViewers() {
         return new ArrayList<>(this.inventories.keySet());
     }

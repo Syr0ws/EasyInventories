@@ -3,9 +3,12 @@ package fr.syrows.easyinventories.configs.sections;
 import fr.syrows.easyinventories.configs.sections.impl.ItemSection;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.NumberConversions;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class IMemorySection implements IConfigurationSection {
 
@@ -18,6 +21,11 @@ public class IMemorySection implements IConfigurationSection {
     @Override
     public boolean contains(String path) {
         return this.section.contains(path);
+    }
+
+    @Override
+    public Set<String> getKeys(boolean keys) {
+        return this.section.getKeys(keys);
     }
 
     @Override
@@ -62,6 +70,31 @@ public class IMemorySection implements IConfigurationSection {
     public Material getMaterial(String path) {
         String matValue = this.getString(path);
         return Material.valueOf(matValue);
+    }
+
+    @Override
+    public ItemStack getItemStack(String path) {
+
+        ItemStack stack = this.section.getItemStack(path);
+
+        return new ItemStack(stack);
+    }
+
+    @Override
+    public List<String> getStringList(String path) {
+        return this.section.getStringList(path);
+    }
+
+    @Override
+    public String[] getStringArray(String path) {
+
+        List<String> strings = this.getStringList(path);
+
+        String[] array = new String[strings.size()];
+
+        for(int i = 0; i < array.length; i++) array[i] = strings.get(i);
+
+        return array;
     }
 
     @Override

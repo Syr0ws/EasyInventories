@@ -116,6 +116,10 @@ public class Pagination<T> {
         return this.elementsPerPage;
     }
 
+    public int countElements() {
+        return this.elements.size();
+    }
+
     private void addPage(Page page) {
         this.pages.add(page);
     }

@@ -46,15 +46,18 @@ public class ConfigUtils {
 
         if(!Files.exists(path)) {
 
-            Files.createDirectories(path); // Create all parent directories that not exist.
+            Files.createDirectories(path.getParent()); // Create all parent directories that not exist.
             Files.createFile(path); // Create the file.
         }
     }
 
     public static void loadFromResources(Plugin plugin, String resourcePath, Path out) throws IOException {
 
-        String data = ConfigUtils.readFromResources(plugin, resourcePath);
+        if(!Files.exists(out)) {
 
-        ConfigUtils.writeToFile(out, data);
+            String data = ConfigUtils.readFromResources(plugin, resourcePath);
+
+            ConfigUtils.writeToFile(out, data);
+        }
     }
 }

@@ -10,14 +10,6 @@ public class ItemSection extends IMemorySection {
         super(section);
     }
 
-    public ItemStack getItemStack(String path) {
-
-        if(!super.section.isItemStack(path))
-            throw new UnsupportedOperationException(String.format("No ItemStack found at '%s.%s'", super.section.getCurrentPath(), path));
-
-        return new ItemStack(super.section.getItemStack(path));
-    }
-
     public ItemStack getDefaultItem() {
 
         if(!super.section.contains("item"))

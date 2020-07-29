@@ -3,8 +3,12 @@ package fr.syrows.easyinventories.configs.sections.impl;
 import fr.syrows.easyinventories.configs.sections.IConfigurationSection;
 import fr.syrows.easyinventories.configs.sections.IMemorySection;
 import fr.syrows.easyinventories.contents.items.PageItem;
+import fr.syrows.easyinventories.inventories.PageableInventory;
 import fr.syrows.easyinventories.tools.pagination.PaginationSettings;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Arrays;
 
 public class PaginationSection extends IMemorySection {
 
@@ -12,16 +16,16 @@ public class PaginationSection extends IMemorySection {
         super(section);
     }
 
-    public ItemSection getPageItem(PageItem.PageType type, boolean replacement) {
+    public PageItem getPageItem(PageableInventory<?> container, PageItem.PageType type, boolean replacement) {
 
-        ConfigurationSection section = super.section.getConfigurationSection(type == PageItem.PageType.NEXT ? "next-page" : "previous-page");
+        ItemSection section = super.getItemSection(type == PageItem.PageType.NEXT ? "next-page" : "previous-page");
 
         String path = type == PageItem.PageType.NEXT ? (replacement ? "no-next" : "next") : (replacement ? ("no-previous") : "previous");
 
-        if(!section.contains(path))
-            throw new NullPointerException(String.format("No item found at '%s.%s'.", section.getCurrentPath(), path));
+        ItemStack stack = section.getItemStack(path);
+        int slot = section.getDefaultSlot();
 
-        return new ItemSection(section.getConfigurationSection(path));
+        return new PageItem(container, type, stack, slot);
     }
 
     public PaginationSettings getSettings() {
@@ -33,7 +37,7 @@ public class PaginationSection extends IMemorySection {
 
         int[] blacklisted;
 
-        if(settings.contains("blacklist")) blacklisted = super.getIntArray("blacklist");
+        if(settings.contains("blacklist")) blacklisted = settings.getIntArray("blacklist");
         else blacklisted = new int[0];
 
         return new PaginationSettings.Builder().values(beginRow, beginColumn, endRow, endColumn).blacklist(blacklisted).getSettings();

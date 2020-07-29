@@ -19,8 +19,6 @@ public class FastInventory extends EasyInventory implements SimpleInventory {
 
     protected FastInventory(InventoryManager manager) {
         super(manager);
-
-        this.inventory = manager.create(this);
     }
 
     @Override
@@ -69,6 +67,7 @@ public class FastInventory extends EasyInventory implements SimpleInventory {
             inventory.size = super.size;
             inventory.sort = super.sort;
 
+            inventory.inventory = super.manager.create(inventory);
             inventory.contents = new DefaultContents(inventory);
 
             return inventory;

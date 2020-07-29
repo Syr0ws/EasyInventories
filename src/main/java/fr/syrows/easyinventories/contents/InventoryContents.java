@@ -2,6 +2,9 @@ package fr.syrows.easyinventories.contents;
 
 import fr.syrows.easyinventories.contents.items.ClickableItem;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
+import fr.syrows.easyinventories.tools.iterators.IteratorType;
+import fr.syrows.easyinventories.tools.iterators.SlotIterator;
+import fr.syrows.easyinventories.tools.iterators.SlotIteratorFactory;
 import fr.syrows.easyinventories.tools.validators.SlotValidator;
 import fr.syrows.easyinventories.utils.SlotUtils;
 import org.bukkit.inventory.ItemStack;
@@ -72,6 +75,34 @@ public abstract class InventoryContents {
         ClickableItem item =  this.contents[row - 1][column - 1];
 
         return item == null ? Optional.empty() : Optional.of(item);
+    }
+
+    public boolean isEmpty(int slot) {
+        return !this.getItem(slot).isPresent();
+    }
+
+    public boolean isEmpty(int row, int column) {
+        return !this.getItem(row, column).isPresent();
+    }
+
+    public void fillEmptySlots(ClickableItem item) {
+
+        SimpleInventory inventory = this.getInventory();
+
+        SlotIterator iterator = SlotIteratorFactory.getIterator(IteratorType.HORIZONTAL,
+                inventory,
+                1,
+                1,
+                inventory.getRows(), inventory.getColumns());
+
+        while(iterator.hasNext()) {
+
+            SlotIterator.Slot slot = iterator.next();
+
+            int row = slot.getRow(), column = slot.getColumn();
+
+            if(this.isEmpty(row, column)) this.setItem(row, column, item);
+        }
     }
 
     private void update(int slot) {
