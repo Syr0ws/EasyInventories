@@ -1,10 +1,9 @@
 package fr.syrows.easyinventories.inventories;
 
-import fr.syrows.easyinventories.contents.ContainerType;
 import fr.syrows.easyinventories.contents.InventoryContents;
-import fr.syrows.easyinventories.contents.InventoryManager;
+import fr.syrows.easyinventories.contents.containers.InventorySort;
 import fr.syrows.easyinventories.listeners.InventoryListenerManager;
-import fr.syrows.easyinventories.openers.impl.DefaultInventoryOpener;
+import fr.syrows.easyinventories.manager.InventoryManager;
 import fr.syrows.easyinventories.tools.CloseReason;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -21,7 +20,7 @@ public interface SimpleInventory {
 
     int getColumns();
 
-    ContainerType getType();
+    InventorySort getContainer();
 
     InventoryContents getContents();
 
@@ -31,11 +30,7 @@ public interface SimpleInventory {
 
     Inventory getInventory();
 
-    default void open(Player player) {
-        this.getInventoryManager().open(player, this, DefaultInventoryOpener.INSTANCE);
-    }
+    void open(Player player);
 
-    default void close(Player player, CloseReason reason) {
-        this.getInventoryManager().close(player, reason);
-    }
+    void close(Player player, CloseReason reason);
 }

@@ -1,7 +1,7 @@
-package fr.syrows.easyinventories.tools.iterators.impl;
+package fr.syrows.easyinventories.iterators.impl;
 
 import fr.syrows.easyinventories.inventories.SimpleInventory;
-import fr.syrows.easyinventories.tools.iterators.SlotIterator;
+import fr.syrows.easyinventories.iterators.SlotIterator;
 
 import java.util.NoSuchElementException;
 

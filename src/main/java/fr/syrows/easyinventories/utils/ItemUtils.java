@@ -9,9 +9,15 @@ import java.util.stream.Collectors;
 
 public class ItemUtils {
 
-    public static ItemStack parse(ItemStack stack, StringParser parser) {
+    public static void parseAll(ItemStack stack, StringParser parser) {
 
-        if(!stack.hasItemMeta()) return stack;
+        ItemUtils.parseName(stack, parser);
+        ItemUtils.parseLore(stack, parser);
+    }
+
+    public static void parseName(ItemStack stack, StringParser parser) {
+
+        if(!stack.hasItemMeta()) return;
 
         ItemMeta meta = stack.getItemMeta();
 
@@ -19,15 +25,23 @@ public class ItemUtils {
 
             String displayName = parser.apply(meta.getDisplayName());
             meta.setDisplayName(displayName);
+
+            stack.setItemMeta(meta);
         }
+    }
+
+    public static void parseLore(ItemStack stack, StringParser parser) {
+
+        if(!stack.hasItemMeta()) return;
+
+        ItemMeta meta = stack.getItemMeta();
 
         if(meta.hasLore()) {
 
             List<String> lore = meta.getLore().stream().map(parser::apply).collect(Collectors.toList());
             meta.setLore(lore);
-        }
-        stack.setItemMeta(meta);
 
-        return stack;
+            stack.setItemMeta(meta);
+        }
     }
 }

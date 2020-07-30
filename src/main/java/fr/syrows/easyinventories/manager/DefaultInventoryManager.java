@@ -1,14 +1,15 @@
-package fr.syrows.easyinventories.contents;
+package fr.syrows.easyinventories.manager;
 
+import fr.syrows.easyinventories.contents.InventoryContents;
+import fr.syrows.easyinventories.contents.containers.InventorySort;
 import fr.syrows.easyinventories.contents.items.ClickableItem;
+import fr.syrows.easyinventories.creators.ChestInventoryCreator;
+import fr.syrows.easyinventories.creators.CommonInventoryCreator;
 import fr.syrows.easyinventories.creators.InventoryCreator;
-import fr.syrows.easyinventories.creators.impl.ChestInventoryCreator;
-import fr.syrows.easyinventories.creators.impl.CommonInventoryCreator;
 import fr.syrows.easyinventories.events.SimpleInventoryClickEvent;
-import fr.syrows.easyinventories.events.SimpleInventoryOpenEvent;
 import fr.syrows.easyinventories.events.SimpleInventoryCloseEvent;
+import fr.syrows.easyinventories.events.SimpleInventoryOpenEvent;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
-import fr.syrows.easyinventories.openers.InventoryOpener;
 import fr.syrows.easyinventories.tools.CloseReason;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -30,17 +31,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-public class InventoryManager {
+public class DefaultInventoryManager implements InventoryManager {
 
-    private static final List<InventoryCreator> CREATORS = Arrays.asList(new ChestInventoryCreator(), new CommonInventoryCreator());
+    public static final List<InventoryCreator> creators = new ArrayList<>();
+
+    static {
+        creators.add(new ChestInventoryCreator());
+        creators.add(new CommonInventoryCreator());
+    }
 
     private Plugin plugin;
+    private Map<Player, SimpleInventory> inventories = new HashMap<>();
 
-    private HashMap<Player, SimpleInventory> inventories = new HashMap<>();
-
-    public InventoryManager(Plugin plugin) {
+    public DefaultInventoryManager(Plugin plugin) {
 
         this.plugin = plugin;
 
@@ -48,28 +52,13 @@ public class InventoryManager {
         pm.registerEvents(new InventoryListeners(), this.plugin);
     }
 
-    public Inventory create(SimpleInventory inventory) {
-
-        ContainerType sort = inventory.getType();
-
-        Optional<InventoryCreator> optional = InventoryManager.CREATORS.stream()
-                .filter(creator -> creator.isSupported(sort))
-                .findFirst();
-
-        if(!optional.isPresent())
-            throw new NullPointerException(String.format("No inventory creator found for type '%s'.", sort.name()));
-
-        return optional.get().getInventory(inventory);
-    }
-
-    public <T extends SimpleInventory> void open(Player player, T inventory, InventoryOpener<T> opener) {
+    @Override
+    public void openInventory(Player player, SimpleInventory inventory) {
 
         if(inventory.getInventory() == null)
             throw new NullPointerException("Bukkit inventory is null. Create it first.");
 
-        if(this.hasOpenedInventory(player)) this.close(player, CloseReason.CLOSE_ALL);
-
-        opener.open(player, inventory);
+        if(this.hasOpenedInventory(player)) this.closeInventory(player, CloseReason.CLOSE_ALL);
 
         SimpleInventoryOpenEvent event = new SimpleInventoryOpenEvent(player, inventory);
 
@@ -78,14 +67,50 @@ public class InventoryManager {
         Bukkit.getPluginManager().callEvent(event);
 
         this.inventories.put(player, inventory);
+
+        player.openInventory(inventory.getInventory());
     }
 
-    public void close(Player player, CloseReason reason) {
+    @Override
+    public void closeInventory(Player player, CloseReason reason) {
 
         this.silentClose(player, reason);
 
         player.closeInventory();
         player.updateInventory();
+    }
+
+    @Override
+    public boolean hasOpenedInventory(Player player) {
+        return this.inventories.containsKey(player);
+    }
+
+    @Override
+    public InventoryCreator findCreator(InventorySort sort) {
+
+        Optional<InventoryCreator> optional = creators.stream()
+                .filter(creator -> creator.isSupported(sort))
+                .findFirst();
+
+        if(!optional.isPresent())
+            throw new NullPointerException(String.format("No container found for type '%s'.", sort.getInventoryType().name()));
+
+        return optional.get();
+    }
+
+    @Override
+    public SimpleInventory getOpenedInventory(Player player) {
+        return this.inventories.getOrDefault(player, null);
+    }
+
+    @Override
+    public List<SimpleInventory> getInventories() {
+        return new ArrayList<>(this.inventories.values());
+    }
+
+    @Override
+    public List<Player> getViewers() {
+        return new ArrayList<>(this.inventories.keySet());
     }
 
     private void silentClose(Player player, CloseReason reason) {
@@ -103,50 +128,6 @@ public class InventoryManager {
         }
     }
 
-    public boolean hasOpenedInventory(Player player) {
-        return this.inventories.containsKey(player);
-    }
-
-    public SimpleInventory getOpenedInventory(Player player) {
-        return this.inventories.getOrDefault(player, null);
-    }
-
-    public List<Player> getViewers(SimpleInventory inventory) {
-
-        return this.inventories.entrySet().stream()
-                .filter(entry -> entry.getValue().equals(inventory))
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
-    }
-
-    public List<Player> getViewers(String identifier) {
-
-        return this.inventories.entrySet().stream()
-                .filter(entry -> entry.getValue().getIdentifier().equals(identifier))
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
-    }
-
-    public List<Player> getViewers(Class<? extends SimpleInventory> clazz) {
-
-        return this.inventories.entrySet().stream()
-                .filter(entry -> entry.getValue().getClass().equals(clazz))
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
-    }
-
-    public <T extends SimpleInventory> List<T> getInventories(Class<T> clazz) {
-
-        return this.inventories.values().stream()
-                .filter(inventory -> inventory.getClass().equals(clazz))
-                .map(clazz::cast)
-                .collect(Collectors.toList());
-    }
-
-    public ArrayList<Player> getAllViewers() {
-        return new ArrayList<>(this.inventories.keySet());
-    }
-
     private class InventoryListeners implements Listener {
 
         private final List<InventoryAction> toCancel = Arrays.asList(
@@ -162,9 +143,9 @@ public class InventoryManager {
 
             Inventory clicked = event.getClickedInventory();
 
-            if(clicked == null || !InventoryManager.this.hasOpenedInventory(player)) return;
+            if(clicked == null || !DefaultInventoryManager.this.hasOpenedInventory(player)) return;
 
-            SimpleInventory inventory = InventoryManager.this.getOpenedInventory(player);
+            SimpleInventory inventory = DefaultInventoryManager.this.getOpenedInventory(player);
 
             if(!clicked.equals(player.getInventory())) {
 
@@ -189,7 +170,7 @@ public class InventoryManager {
 
             Player player = (Player) event.getPlayer();
 
-            InventoryManager.this.silentClose(player, CloseReason.CLOSE_ALL);
+            DefaultInventoryManager.this.silentClose(player, CloseReason.CLOSE_ALL);
 
             player.updateInventory();
         }
@@ -203,9 +184,9 @@ public class InventoryManager {
             // The clicked inventory is always the top inventory so if a player clicks on its
             // inventory, it will consider the one at the top and not the real clicked.
 
-            if(!InventoryManager.this.hasOpenedInventory(player)) return;
+            if(!DefaultInventoryManager.this.hasOpenedInventory(player)) return;
 
-            SimpleInventory inventory = InventoryManager.this.getOpenedInventory(player);
+            SimpleInventory inventory = DefaultInventoryManager.this.getOpenedInventory(player);
 
             boolean match = event.getRawSlots().stream().anyMatch(slot -> slot < inventory.getSize());
 
@@ -217,17 +198,17 @@ public class InventoryManager {
 
             Player player = event.getPlayer();
 
-            InventoryManager.this.close(player, CloseReason.CLOSE_ALL);
+            DefaultInventoryManager.this.closeInventory(player, CloseReason.CLOSE_ALL);
         }
 
         @EventHandler
         public void onPluginDisable(PluginDisableEvent event) {
 
-            if(!event.getPlugin().equals(InventoryManager.this.plugin)) return;
+            if(!event.getPlugin().equals(DefaultInventoryManager.this.plugin)) return;
 
-            ArrayList<Player> viewers = InventoryManager.this.getAllViewers();
+            List<Player> viewers = DefaultInventoryManager.this.getViewers();
 
-            viewers.forEach(viewer -> InventoryManager.this.close(viewer, CloseReason.CLOSE_ALL));
+            viewers.forEach(viewer -> DefaultInventoryManager.this.closeInventory(viewer, CloseReason.CLOSE_ALL));
         }
     }
 }

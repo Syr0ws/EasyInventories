@@ -1,17 +1,17 @@
 package fr.syrows.easyinventories.inventories.impl;
 
 import fr.syrows.easyinventories.builders.InventoryBuilder;
+import fr.syrows.easyinventories.contents.DefaultInventoryContents;
 import fr.syrows.easyinventories.contents.InventoryContents;
-import fr.syrows.easyinventories.contents.InventoryManager;
-import fr.syrows.easyinventories.contents.ContainerType;
-import fr.syrows.easyinventories.contents.impl.DefaultContents;
+import fr.syrows.easyinventories.contents.containers.InventorySortType;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
+import fr.syrows.easyinventories.manager.InventoryManager;
 import org.bukkit.inventory.Inventory;
 
-public class FastInventory extends EasyInventory implements SimpleInventory {
+public class FastInventory extends AbstractInventory implements SimpleInventory {
 
     private String identifier, title;
-    private ContainerType sort;
+    private InventorySortType sort;
     private int size;
 
     private InventoryContents contents;
@@ -37,7 +37,7 @@ public class FastInventory extends EasyInventory implements SimpleInventory {
     }
 
     @Override
-    public ContainerType getType() {
+    public InventorySortType getContainer() {
         return this.sort;
     }
 
@@ -67,8 +67,8 @@ public class FastInventory extends EasyInventory implements SimpleInventory {
             inventory.size = super.size;
             inventory.sort = super.sort;
 
-            inventory.inventory = super.manager.create(inventory);
-            inventory.contents = new DefaultContents(inventory);
+            inventory.inventory = super.manager.findCreator(super.sort).getInventory(inventory);
+            inventory.contents = new DefaultInventoryContents(inventory);
 
             return inventory;
         }

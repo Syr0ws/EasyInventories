@@ -1,6 +1,7 @@
 package fr.syrows.easyinventories;
 
-import fr.syrows.easyinventories.contents.InventoryManager;
+import fr.syrows.easyinventories.manager.DefaultInventoryManager;
+import fr.syrows.easyinventories.manager.InventoryManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class EasyInventoriesPlugin extends JavaPlugin {
@@ -9,7 +10,7 @@ public class EasyInventoriesPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.inventoryManager = new InventoryManager(this);
+        this.inventoryManager = new DefaultInventoryManager(this);
     }
 
     public InventoryManager getInventoryManager() {

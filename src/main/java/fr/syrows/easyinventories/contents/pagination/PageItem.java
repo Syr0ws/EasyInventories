@@ -1,8 +1,9 @@
-package fr.syrows.easyinventories.contents.items;
+package fr.syrows.easyinventories.contents.pagination;
 
-import fr.syrows.easyinventories.tools.validators.SlotValidator;
+import fr.syrows.easyinventories.contents.items.ClickableItem;
+import fr.syrows.easyinventories.inventories.impl.PageableInventory;
+import fr.syrows.easyinventories.tools.SlotValidator;
 import fr.syrows.easyinventories.utils.SlotUtils;
-import fr.syrows.easyinventories.inventories.PageableInventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
@@ -33,7 +34,7 @@ public class PageItem {
         this.container = container;
         this.type = type;
         this.stack = stack;
-        this.slot = SlotUtils.getSlot(container.getType(), row, column);
+        this.slot = SlotUtils.getSlot(container.getContainer(), row, column);
     }
 
     public ClickableItem getItem() {

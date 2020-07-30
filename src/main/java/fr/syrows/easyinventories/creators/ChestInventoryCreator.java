@@ -1,8 +1,7 @@
-package fr.syrows.easyinventories.creators.impl;
+package fr.syrows.easyinventories.creators;
 
-import fr.syrows.easyinventories.contents.ContainerType;
+import fr.syrows.easyinventories.contents.containers.InventorySort;
 import fr.syrows.easyinventories.utils.Utils;
-import fr.syrows.easyinventories.creators.InventoryCreator;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
@@ -21,7 +20,7 @@ public class ChestInventoryCreator implements InventoryCreator {
     }
 
     @Override
-    public boolean isSupported(ContainerType sort) {
-        return sort.getType() == InventoryType.CHEST;
+    public boolean isSupported(InventorySort sort) {
+        return sort.getInventoryType() == InventoryType.CHEST;
     }
 }

@@ -1,6 +1,6 @@
 package fr.syrows.easyinventories.builders;
 
-import fr.syrows.easyinventories.contents.ContainerType;
+import fr.syrows.easyinventories.contents.containers.InventorySortType;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
 
 public interface AbstractBuilder<SELF, T extends SimpleInventory> {
@@ -11,7 +11,7 @@ public interface AbstractBuilder<SELF, T extends SimpleInventory> {
 
     SELF withSize(int size);
 
-    SELF withSort(ContainerType sort);
+    SELF withSort(InventorySortType sort);
 
     T build();
 }

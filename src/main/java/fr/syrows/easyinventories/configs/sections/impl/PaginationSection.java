@@ -2,13 +2,11 @@ package fr.syrows.easyinventories.configs.sections.impl;
 
 import fr.syrows.easyinventories.configs.sections.IConfigurationSection;
 import fr.syrows.easyinventories.configs.sections.IMemorySection;
-import fr.syrows.easyinventories.contents.items.PageItem;
-import fr.syrows.easyinventories.inventories.PageableInventory;
-import fr.syrows.easyinventories.tools.pagination.PaginationSettings;
+import fr.syrows.easyinventories.contents.pagination.PageItem;
+import fr.syrows.easyinventories.inventories.impl.PageableInventory;
+import fr.syrows.easyinventories.contents.pagination.PaginationSettings;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Arrays;
 
 public class PaginationSection extends IMemorySection {
 
@@ -16,7 +14,7 @@ public class PaginationSection extends IMemorySection {
         super(section);
     }
 
-    public PageItem getPageItem(PageableInventory<?> container, PageItem.PageType type, boolean replacement) {
+    public PageItem getPageItem(PageableInventory<?> inventory, PageItem.PageType type, boolean replacement) {
 
         ItemSection section = super.getItemSection(type == PageItem.PageType.NEXT ? "next-page" : "previous-page");
 
@@ -25,7 +23,7 @@ public class PaginationSection extends IMemorySection {
         ItemStack stack = section.getItemStack(path);
         int slot = section.getDefaultSlot();
 
-        return new PageItem(container, type, stack, slot);
+        return new PageItem(inventory, type, stack, slot);
     }
 
     public PaginationSettings getSettings() {

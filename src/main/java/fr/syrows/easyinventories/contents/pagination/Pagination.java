@@ -1,4 +1,4 @@
-package fr.syrows.easyinventories.tools.pagination;
+package fr.syrows.easyinventories.contents.pagination;
 
 import java.util.ArrayList;
 import java.util.List;

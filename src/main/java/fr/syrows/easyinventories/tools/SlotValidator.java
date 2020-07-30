@@ -1,4 +1,4 @@
-package fr.syrows.easyinventories.tools.validators;
+package fr.syrows.easyinventories.tools;
 
 import fr.syrows.easyinventories.exceptions.InvalidPositionException;
 import fr.syrows.easyinventories.inventories.SimpleInventory;

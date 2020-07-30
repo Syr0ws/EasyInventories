@@ -1,10 +1,10 @@
-package fr.syrows.easyinventories.tools.iterators;
+package fr.syrows.easyinventories.iterators;
 
-import fr.syrows.easyinventories.contents.ContainerType;
+import fr.syrows.easyinventories.contents.containers.InventorySort;
 import fr.syrows.easyinventories.contents.items.ClickableItem;
-import fr.syrows.easyinventories.tools.validators.SlotValidator;
-import fr.syrows.easyinventories.utils.SlotUtils;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
+import fr.syrows.easyinventories.tools.SlotValidator;
+import fr.syrows.easyinventories.utils.SlotUtils;
 
 import java.util.Optional;
 
@@ -130,7 +130,7 @@ public abstract class SlotIterator {
 
         public int getSlot() {
 
-            ContainerType sort = SlotIterator.this.inventory.getType();
+            InventorySort sort = SlotIterator.this.inventory.getContainer();
 
             return SlotUtils.getSlot(sort, this.row, this.column);
         }

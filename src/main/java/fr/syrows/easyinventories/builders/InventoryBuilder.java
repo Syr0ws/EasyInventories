@@ -1,15 +1,14 @@
 package fr.syrows.easyinventories.builders;
 
-import fr.syrows.easyinventories.contents.InventoryManager;
-import fr.syrows.easyinventories.contents.ContainerType;
+import fr.syrows.easyinventories.contents.containers.InventorySortType;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
+import fr.syrows.easyinventories.manager.InventoryManager;
 
 public abstract class InventoryBuilder<SELF, T extends SimpleInventory> implements AbstractBuilder<SELF, T> {
 
     protected InventoryManager manager;
-
     protected String identifier, title;
-    protected ContainerType sort;
+    protected InventorySortType sort;
     protected int size;
 
     public InventoryBuilder(InventoryManager manager) {
@@ -17,7 +16,7 @@ public abstract class InventoryBuilder<SELF, T extends SimpleInventory> implemen
         this.manager = manager;
 
         this.identifier = "unknown";
-        this.sort = ContainerType.CHEST;
+        this.sort = InventorySortType.CHEST;
 
         this.title = this.sort.getDefaultTitle();
         this.size = this.sort.getDefaultSize();
@@ -42,7 +41,7 @@ public abstract class InventoryBuilder<SELF, T extends SimpleInventory> implemen
     }
 
     @Override
-    public SELF withSort(ContainerType sort) {
+    public SELF withSort(InventorySortType sort) {
         this.sort = sort;
         return this.self();
     }
