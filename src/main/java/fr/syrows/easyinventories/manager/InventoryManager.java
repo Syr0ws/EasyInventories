@@ -16,7 +16,7 @@
 
 package fr.syrows.easyinventories.manager;
 
-import fr.syrows.easyinventories.contents.containers.InventorySort;
+import fr.syrows.easyinventories.contents.sort.InventorySort;
 import fr.syrows.easyinventories.creators.InventoryCreator;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
 import fr.syrows.easyinventories.tools.CloseReason;
@@ -43,7 +43,7 @@ public interface InventoryManager {
 
     default List<Player> getViewers(String id) {
         return this.getViewers().stream()
-                .filter(viewer -> this.getOpenedInventory(viewer).getIdentifier().equals(id))
+                .filter(viewer -> this.getOpenedInventory(viewer).getId().equals(id))
                 .collect(Collectors.toList());
     }
 

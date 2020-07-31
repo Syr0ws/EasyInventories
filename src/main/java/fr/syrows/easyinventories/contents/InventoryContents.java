@@ -24,22 +24,65 @@ import java.util.Optional;
 
 public interface InventoryContents {
 
+    /**
+     * Set a ClickableItem at the specified slot.
+     *
+     * @param slot - the slot to which set the item.
+     * @param item - the item to set.
+     */
     void setItem(int slot, ClickableItem item);
 
+    /**
+     * Set a ClickableItem at the specified rows and columns.
+     *
+     * @param row - the row to which set the item.
+     * @param column - the column to which set the item.
+     * @param item - the item to set.
+     */
     void setItem(int row, int column, ClickableItem item);
 
+    /**
+     * Set a ClickableItem to the specified slots.
+     *
+     * @param item - the item to set.
+     * @param slots - an array of slots to which set the item.
+     */
     void setItems(ClickableItem item, int... slots);
 
     Optional<ClickableItem> getItem(int slot);
 
     Optional<ClickableItem> getItem(int row, int column);
 
+    /**
+     * Check there is a ClickableItem at the specified slot.
+     *
+     * @param slot - the slot to check.
+     * @return false if there is a ClickableItem at this slot or else true.
+     */
     boolean isEmpty(int slot);
 
+    /**
+     * Check if there is a ClickableItem at the specified row and column.
+     *
+     * @param row - the row coordinate.
+     * @param column - the column coordinate.
+     * @return false if there is a ClickableItem at the specified position or else true.
+     */
     boolean isEmpty(int row, int column);
 
+    /**
+     * Update the specified slot.
+     *
+     * @param slot - the slot to update.
+     */
     void update(int slot);
 
+    /**
+     * Update the position specified with row and column parameters.
+     *
+     * @param row - the row coordinate.
+     * @param column - the column coordinate.
+     */
     void update(int row, int column);
 
     SlotIterator getContentsIterator();

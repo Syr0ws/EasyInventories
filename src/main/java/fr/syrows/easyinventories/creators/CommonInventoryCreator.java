@@ -16,7 +16,7 @@
 
 package fr.syrows.easyinventories.creators;
 
-import fr.syrows.easyinventories.contents.containers.InventorySort;
+import fr.syrows.easyinventories.contents.sort.InventorySort;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
 import fr.syrows.easyinventories.utils.Utils;
 import org.bukkit.Bukkit;
@@ -25,7 +25,7 @@ import org.bukkit.inventory.Inventory;
 import java.util.Arrays;
 import java.util.List;
 
-import static fr.syrows.easyinventories.contents.containers.InventorySortType.*;
+import static fr.syrows.easyinventories.contents.sort.InventorySortType.*;
 
 public class CommonInventoryCreator implements InventoryCreator {
 
@@ -36,7 +36,7 @@ public class CommonInventoryCreator implements InventoryCreator {
 
         String title = Utils.parseColors(inventory.getTitle());
 
-        InventorySort sort = inventory.getContainer();
+        InventorySort sort = inventory.getSort();
 
         return Bukkit.createInventory(null, sort.getInventoryType(), title);
     }

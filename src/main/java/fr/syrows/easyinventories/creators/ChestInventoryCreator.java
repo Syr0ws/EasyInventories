@@ -16,7 +16,7 @@
 
 package fr.syrows.easyinventories.creators;
 
-import fr.syrows.easyinventories.contents.containers.InventorySort;
+import fr.syrows.easyinventories.contents.sort.InventorySort;
 import fr.syrows.easyinventories.utils.Utils;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
 import org.bukkit.Bukkit;

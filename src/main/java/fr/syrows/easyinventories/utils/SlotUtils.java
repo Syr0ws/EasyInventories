@@ -16,7 +16,7 @@
 
 package fr.syrows.easyinventories.utils;
 
-import fr.syrows.easyinventories.contents.containers.InventorySort;
+import fr.syrows.easyinventories.contents.sort.InventorySort;
 
 public class SlotUtils {
 

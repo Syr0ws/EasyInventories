@@ -16,18 +16,18 @@
 
 package fr.syrows.easyinventories.builders;
 
-import fr.syrows.easyinventories.contents.containers.InventorySortType;
+import fr.syrows.easyinventories.contents.sort.InventorySortType;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
 import fr.syrows.easyinventories.manager.InventoryManager;
 
-public abstract class InventoryBuilder<SELF, T extends SimpleInventory> implements AbstractBuilder<SELF, T> {
+public abstract class InventoryInventoryBuilder<SELF, T extends SimpleInventory> implements AbstractInventoryBuilder<SELF, T> {
 
     protected InventoryManager manager;
     protected String identifier, title;
     protected InventorySortType sort;
     protected int size;
 
-    public InventoryBuilder(InventoryManager manager) {
+    public InventoryInventoryBuilder(InventoryManager manager) {
 
         this.manager = manager;
 
@@ -39,8 +39,8 @@ public abstract class InventoryBuilder<SELF, T extends SimpleInventory> implemen
     }
 
     @Override
-    public SELF withIdentifier(String identifier) {
-        this.identifier = identifier;
+    public SELF withId(String id) {
+        this.identifier = id;
         return this.self();
     }
 

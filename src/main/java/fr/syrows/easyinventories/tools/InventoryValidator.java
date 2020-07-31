@@ -16,7 +16,7 @@
 
 package fr.syrows.easyinventories.tools;
 
-import fr.syrows.easyinventories.contents.containers.InventorySort;
+import fr.syrows.easyinventories.contents.sort.InventorySort;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
 
 public class InventoryValidator {
@@ -41,8 +41,8 @@ public class InventoryValidator {
 
     public static void validateInventory(SimpleInventory inventory) {
 
-        InventoryValidator.validateIdentifier(inventory.getIdentifier());
+        InventoryValidator.validateIdentifier(inventory.getId());
         InventoryValidator.validateTitle(inventory.getTitle());
-        InventoryValidator.validateSize(inventory.getContainer(), inventory.getSize());
+        InventoryValidator.validateSize(inventory.getSort(), inventory.getSize());
     }
 }

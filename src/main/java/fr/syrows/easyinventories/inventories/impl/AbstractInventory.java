@@ -45,12 +45,12 @@ public abstract class AbstractInventory implements SimpleInventory {
 
     @Override
     public int getRows() {
-        return SlotUtils.getRow(this.getContainer(), this.getSize());
+        return SlotUtils.getRow(this.getSort(), this.getSize());
     }
 
     @Override
     public int getColumns() {
-        return getContainer().getDefaultColumns();
+        return getSort().getDefaultColumns();
     }
 
     @Override

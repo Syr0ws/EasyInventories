@@ -17,7 +17,7 @@
 package fr.syrows.easyinventories.manager;
 
 import fr.syrows.easyinventories.contents.InventoryContents;
-import fr.syrows.easyinventories.contents.containers.InventorySort;
+import fr.syrows.easyinventories.contents.sort.InventorySort;
 import fr.syrows.easyinventories.contents.items.ClickableItem;
 import fr.syrows.easyinventories.creators.ChestInventoryCreator;
 import fr.syrows.easyinventories.creators.CommonInventoryCreator;
@@ -74,13 +74,13 @@ public class DefaultInventoryManager implements InventoryManager {
         if(inventory.getInventory() == null)
             throw new NullPointerException("Bukkit inventory is null. Create it first.");
 
-        if(this.hasOpenedInventory(player)) this.closeInventory(player, CloseReason.CLOSE_ALL);
+        if(this.hasOpenedInventory(player))
+            this.closeInventory(player, CloseReason.CLOSE_ALL); // Closing the opened inventory if player has one.
 
         SimpleInventoryOpenEvent event = new SimpleInventoryOpenEvent(player, inventory);
 
-        inventory.getListenerManager().accept(event);
-
-        Bukkit.getPluginManager().callEvent(event);
+        inventory.getListenerManager().accept(event); // Calling listeners registered in the listener manager.
+        Bukkit.getPluginManager().callEvent(event); // Calling listeners registered in the classes that implement Listener.
 
         this.inventories.put(player, inventory);
 
@@ -90,10 +90,12 @@ public class DefaultInventoryManager implements InventoryManager {
     @Override
     public void closeInventory(Player player, CloseReason reason) {
 
+        // Using silent close method to handle data.
+        // Must be called before closing inventory or else the InventoryCloseEvent will do it again.
         this.silentClose(player, reason);
 
-        player.closeInventory();
-        player.updateInventory();
+        player.closeInventory(); // Closing the inventory.
+        player.updateInventory(); // Updating player's inventory to prevent graphic bugs.
     }
 
     @Override
@@ -129,18 +131,19 @@ public class DefaultInventoryManager implements InventoryManager {
         return new ArrayList<>(this.inventories.keySet());
     }
 
+    // This method will not close the inventory using the Player#closeInventory() method.
+    // This has for goal to prevent stackOverFlow errors with the InventoryCloseEvent below.
     private void silentClose(Player player, CloseReason reason) {
 
         if(this.hasOpenedInventory(player)) {
 
-            SimpleInventory inventory = this.getOpenedInventory(player);
+            SimpleInventory inventory = this.getOpenedInventory(player); // Retrieving the opened inventory.
             SimpleInventoryCloseEvent event = new SimpleInventoryCloseEvent(player, inventory, reason);
 
-            inventory.getListenerManager().accept(event);
+            inventory.getListenerManager().accept(event); // Calling listeners registered in the listener manager.
+            Bukkit.getPluginManager().callEvent(event); // Calling listeners registered in the classes that implement Listener.
 
-            Bukkit.getPluginManager().callEvent(event);
-
-            this.inventories.remove(player);
+            this.inventories.remove(player); // Removing data.
         }
     }
 
@@ -165,20 +168,19 @@ public class DefaultInventoryManager implements InventoryManager {
 
             if(!clicked.equals(player.getInventory())) {
 
-                event.setCancelled(true);
+                event.setCancelled(true); // Cancelling actions in this inventory.
 
                 InventoryContents contents = inventory.getContents();
 
                 SimpleInventoryClickEvent customEvent = new SimpleInventoryClickEvent(event, inventory);
 
-                Optional<ClickableItem> optional = contents.getItem(event.getSlot());
-                optional.ifPresent(clickableItem -> clickableItem.accept(customEvent));
+                Optional<ClickableItem> optional = contents.getItem(event.getSlot()); // Retrieving current item.
+                optional.ifPresent(clickableItem -> clickableItem.accept(customEvent)); // Executing its consumer if it has one.
 
-                inventory.getListenerManager().accept(customEvent);
+                inventory.getListenerManager().accept(customEvent); // Calling listeners registered in the listener manager.
+                Bukkit.getPluginManager().callEvent(customEvent); // Calling listeners registered in the classes that implement Listener.
 
-                Bukkit.getPluginManager().callEvent(customEvent);
-
-            } else event.setCancelled(this.toCancel.contains(event.getAction()));
+            } else event.setCancelled(this.toCancel.contains(event.getAction())); // Cancelling only the the action is contained in the toCancel list above.
         }
 
         @EventHandler
@@ -186,9 +188,11 @@ public class DefaultInventoryManager implements InventoryManager {
 
             Player player = (Player) event.getPlayer();
 
+            // Inventory is already closed so it's not necessary to close it again.
+            // That is why we use the silent close method here.
             DefaultInventoryManager.this.silentClose(player, CloseReason.CLOSE_ALL);
 
-            player.updateInventory();
+            player.updateInventory(); // Updating player's inventory to prevent graphic bugs.
         }
 
         @EventHandler
@@ -204,6 +208,7 @@ public class DefaultInventoryManager implements InventoryManager {
 
             SimpleInventory inventory = DefaultInventoryManager.this.getOpenedInventory(player);
 
+            // Checking that the clicked slot is inside the opened inventory.
             boolean match = event.getRawSlots().stream().anyMatch(slot -> slot < inventory.getSize());
 
             event.setCancelled(match);
