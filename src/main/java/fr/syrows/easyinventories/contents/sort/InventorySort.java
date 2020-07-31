@@ -14,19 +14,46 @@
  *    limitations under the License.
  */
 
-package fr.syrows.easyinventories.contents.containers;
+package fr.syrows.easyinventories.contents.sort;
 
 import org.bukkit.event.inventory.InventoryType;
 
 public interface InventorySort {
 
+    /**
+     * Check if the specified size is allowed for the current InventorySort.
+     *
+     * @param size - the size to check.
+     * @return true if the specified size is allowed or else false.
+     */
     boolean isAllowed(int size);
 
+    /**
+     * Returns the default number of columns of the inventory.
+     *
+     * @return a number of columns.
+     */
     int getDefaultColumns();
 
+    /**
+     * Returns the default size of the inventory.
+     *
+     * @return an inventory size.
+     */
     int getDefaultSize();
 
+    /**
+     * Returns the default title of the inventory.
+     *
+     * @return the default title of the inventory.
+     */
     String getDefaultTitle();
 
+    /**
+     * A wrapper used to get an InventoryType from the current object
+     * of the InventorySort class.
+     *
+     * @return an object of the InventoryType class.
+     */
     InventoryType getInventoryType();
 }

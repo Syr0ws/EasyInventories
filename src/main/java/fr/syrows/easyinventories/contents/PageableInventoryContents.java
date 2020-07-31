@@ -32,17 +32,25 @@ public class PageableInventoryContents<T> extends DefaultInventoryContents {
         super(inventory);
     }
 
-    public void updatePaginationContent() {
+    /**
+     * Update the page items and refresh page contents.
+     */
+    public void updatePagination() {
         this.updatePageContents();
         this.updatePageItems();
     }
 
+    /**
+     * Refresh the page contents by resetting all the items.
+     */
     public void updatePageContents() {
 
+        // Retrieving a SlotIterator to iterate through all the pageable slots.
         SlotIterator iterator = this.getPaginationIterator();
 
         PageableInventory<T> inventory = this.getInventory();
 
+        // Retrieving the paginated objects.
         List<T> elements = inventory.getOpenedPage().getElements();
 
         int index = 0;
@@ -52,6 +60,8 @@ public class PageableInventoryContents<T> extends DefaultInventoryContents {
 
             ClickableItem item;
 
+            // Index is lower than the number of elements of the page
+            // so there is an item to add in the inventory.
             if(index < elements.size()) {
 
                 T element = elements.get(index);
@@ -66,6 +76,9 @@ public class PageableInventoryContents<T> extends DefaultInventoryContents {
         }
     }
 
+    /**
+     * Update the items used to change page.
+     */
     public void updatePageItems() {
 
         PageableInventory<T> inventory = this.getInventory();
@@ -73,13 +86,18 @@ public class PageableInventoryContents<T> extends DefaultInventoryContents {
         PageItem previous = inventory.getPreviousPage(), next = inventory.getNextPage();
         ClickableItem previousItem = previous.getItem(), nextItem = next.getItem();
 
-        previousItem.update();
-        nextItem.update();
+        previousItem.update(); // Updating the previous page item.
+        nextItem.update(); // Updating the next page item.
 
         super.setItem(previous.getSlot(), previousItem);
         super.setItem(next.getSlot(), nextItem);
     }
 
+    /**
+     * Returns a SlotIterator used to iterate through all the pageable slots.
+     *
+     * @return an object of type SlotIterator.
+     */
     public SlotIterator getPaginationIterator() {
 
         PaginationSettings settings = this.getInventory().getSettings();
@@ -93,6 +111,11 @@ public class PageableInventoryContents<T> extends DefaultInventoryContents {
                 settings.getBlacklisted());
     }
 
+    /**
+     * Retrieve the stored inventory as a PageableInventory<T>.
+     *
+     * @return the stored inventory as a PageableInventory<T>.
+     */
     @Override
     @SuppressWarnings("unchecked")
     protected PageableInventory<T> getInventory() {

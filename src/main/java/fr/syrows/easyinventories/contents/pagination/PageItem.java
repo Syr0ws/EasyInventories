@@ -50,7 +50,7 @@ public class PageItem {
         this.container = container;
         this.type = type;
         this.stack = stack;
-        this.slot = SlotUtils.getSlot(container.getContainer(), row, column);
+        this.slot = SlotUtils.getSlot(container.getSort(), row, column);
     }
 
     public ClickableItem getItem() {

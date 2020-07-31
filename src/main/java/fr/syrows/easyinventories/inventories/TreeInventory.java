@@ -21,14 +21,43 @@ import org.bukkit.entity.Player;
 
 public interface TreeInventory extends SimpleInventory {
 
+    /**
+     * Returns the parent of the current inventory. May be null if this
+     * this inventory hasn't parent. When closing this inventory, if it
+     * has a parent and the CloseReason isn't CloseReason.CLOSE_ALL then
+     * this parent inventory will be opened.
+     *
+     * @return the parent inventory.
+     */
     TreeInventory getParent();
 
+    /**
+     * Set the parent inventory for this inventory.
+     *
+     * @param inventory - the parent inventory to set.
+     */
     void setParent(TreeInventory inventory);
 
+    /**
+     * Returns the opened inventory. May be null if no inventory is opened.
+     *
+     * @return the opened inventory.
+     */
     TreeInventory getOpened();
 
+    /**
+     * Set an opened inventory for this one. * This method will be called when
+     * using the open(Player player, TreeInventory inventory) method.
+     *
+     * @param inventory - the inventory to set.
+     */
     void setOpened(TreeInventory inventory);
 
+    /**
+     * Back to the parent inventory for the specified player.
+     *
+     * @param player - the player for which to open the parent inventory.
+     */
     default void back(Player player) {
 
         TreeInventory parent = this.getParent();
@@ -42,6 +71,12 @@ public interface TreeInventory extends SimpleInventory {
         parent.open(player);
     }
 
+    /**
+     * Open a child inventory for the specified player.
+     *
+     * @param player - the player to open the inventory.
+     * @param inventory - the inventory to open.
+     */
     default void open(Player player, TreeInventory inventory) {
 
         this.close(player, CloseReason.OPEN_CHILD);

@@ -35,7 +35,7 @@ public class DefaultInventoryContents implements InventoryContents {
 
         int rows = inventory.getRows(), columns = inventory.getColumns();
 
-        this.contents = new ClickableItem[rows][columns];
+        this.contents = new ClickableItem[rows][columns]; // Creating a two dimensional array to work with rows and columns.
         this.inventory = inventory;
     }
 
@@ -44,11 +44,11 @@ public class DefaultInventoryContents implements InventoryContents {
 
         SlotValidator.validateSlot(this.inventory, slot);
 
-        int row = SlotUtils.getRow(this.inventory.getContainer(), slot);
-        int column = SlotUtils.getColumn(this.inventory.getContainer(), slot);
+        int row = SlotUtils.getRow(this.inventory.getSort(), slot);
+        int column = SlotUtils.getColumn(this.inventory.getSort(), slot);
 
         this.contents[row][column] = item;
-        this.update(slot);
+        this.update(slot); // Updating slot in the Bukkit inventory.
     }
 
     @Override
@@ -57,7 +57,7 @@ public class DefaultInventoryContents implements InventoryContents {
         SlotValidator.validatePosition(this.inventory, row, column);
 
         this.contents[row - 1][column - 1] = item;
-        this.update(row, column);
+        this.update(row, column); // Updating slot in the Bukkit inventory.
     }
 
     @Override
@@ -74,8 +74,8 @@ public class DefaultInventoryContents implements InventoryContents {
 
         SlotValidator.validateSlot(this.inventory, slot);
 
-        int row = SlotUtils.getRow(this.inventory.getContainer(), slot);
-        int column = SlotUtils.getColumn(this.inventory.getContainer(), slot);
+        int row = SlotUtils.getRow(this.inventory.getSort(), slot);
+        int column = SlotUtils.getColumn(this.inventory.getSort(), slot);
 
         ClickableItem item = this.contents[row][column];
 
@@ -106,6 +106,8 @@ public class DefaultInventoryContents implements InventoryContents {
     public void update(int slot) {
 
         Optional<ClickableItem> optional = this.getItem(slot);
+
+        // If there is ClickableItem at the specified slot, retrieving its ItemStack or else retrieving null.
         ItemStack stack = optional.map(ClickableItem::getItemStack).orElse(null);
 
         this.inventory.getInventory().setItem(slot, stack);
@@ -114,15 +116,17 @@ public class DefaultInventoryContents implements InventoryContents {
     @Override
     public void update(int row, int column) {
 
-        int slot = SlotUtils.getSlot(this.inventory.getContainer(), row, column);
+        int slot = SlotUtils.getSlot(this.inventory.getSort(), row, column);
 
         Optional<ClickableItem> optional = this.getItem(slot);
 
+        // If there is ClickableItem at the specified slot, retrieving its ItemStack or else retrieving null.
         ItemStack stack = optional.map(ClickableItem::getItemStack).orElse(null);
 
         this.inventory.getInventory().setItem(slot, stack);
     }
 
+    // TODO
     @Override
     public SlotIterator getContentsIterator() {
         return null;
@@ -133,6 +137,8 @@ public class DefaultInventoryContents implements InventoryContents {
         return Arrays.copyOf(this.contents, this.contents.length);
     }
 
+    // Using protected visibility to allows the method to be redefined
+    // and to change its return type to prevent multiple casts in code.
     protected SimpleInventory getInventory() {
         return this.inventory;
     }

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package fr.syrows.easyinventories.contents.containers;
+package fr.syrows.easyinventories.contents.sort;
 
 import org.bukkit.event.inventory.InventoryType;
 
@@ -42,7 +42,7 @@ public enum InventorySortType implements InventorySort {
 
     @Override
     public boolean isAllowed(int size) {
-        return Arrays.stream(this.sizes).anyMatch(s -> s == size);
+        return this.getDefaultSize() == size || Arrays.stream(this.sizes).anyMatch(s -> s == size);
     }
 
     @Override
