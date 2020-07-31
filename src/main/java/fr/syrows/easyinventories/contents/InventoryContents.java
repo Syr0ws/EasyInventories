@@ -1,103 +1,83 @@
+/*
+ * Copyright 2020 Syr0ws
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package fr.syrows.easyinventories.contents;
 
 import fr.syrows.easyinventories.contents.items.ClickableItem;
-import fr.syrows.easyinventories.inventories.SimpleInventory;
-import fr.syrows.easyinventories.tools.validators.SlotValidator;
-import fr.syrows.easyinventories.utils.SlotUtils;
-import org.bukkit.inventory.ItemStack;
+import fr.syrows.easyinventories.exceptions.InvalidPositionException;
+import fr.syrows.easyinventories.iterators.SlotIterator;
 
-import java.util.Arrays;
 import java.util.Optional;
 
-public abstract class InventoryContents {
+public interface InventoryContents {
 
-    private ClickableItem[][] contents;
+    void setItem(int slot, ClickableItem item);
 
-    public InventoryContents(SimpleInventory inventory) {
+    void setItem(int row, int column, ClickableItem item);
 
-        int rows = inventory.getRows(), columns = inventory.getColumns();
+    void setItems(ClickableItem item, int... slots);
 
-        this.contents = new ClickableItem[rows][columns];
+    Optional<ClickableItem> getItem(int slot);
+
+    Optional<ClickableItem> getItem(int row, int column);
+
+    boolean isEmpty(int slot);
+
+    boolean isEmpty(int row, int column);
+
+    void update(int slot);
+
+    void update(int row, int column);
+
+    SlotIterator getContentsIterator();
+
+    ClickableItem[][] getContents();
+
+    default void fillEmptySlots(ClickableItem item) {
+
+        ClickableItem[][] contents = this.getContents();
+
+        for(int row = 0; row < contents.length; row++) {
+
+            for(int column = 0; column < contents.length; column++) {
+
+                if(this.isEmpty(row, column)) this.setItem(row, column, item);
+            }
+        }
     }
 
-    public abstract SimpleInventory getInventory();
+    default void fillRow(int row, ClickableItem item) {
 
-    public void setItem(int slot, ClickableItem item) {
+        ClickableItem[][] contents = this.getContents();
 
-        SimpleInventory inventory = this.getInventory();
+        if(row < 1 || row > contents.length)
+            throw new InvalidPositionException(String.format("Row must be between 1 and %d", contents.length), row);
 
-        SlotValidator.validateSlot(inventory, slot);
-
-        int row = SlotUtils.getRow(inventory.getType(), slot);
-        int column = SlotUtils.getColumn(inventory.getType(), slot);
-
-        this.contents[row][column] = item;
-        this.update(slot);
+        for(int column = 1; column < contents[row - 1].length; column++)
+            this.setItem(row, column, item);
     }
 
-    public void setItem(int row, int column, ClickableItem item) {
+    default void fillColumn(int column, ClickableItem item) {
 
-        SlotValidator.validatePosition(this.getInventory(), row, column);
+        ClickableItem[][] contents = this.getContents();
 
-        this.contents[row - 1][column - 1] = item;
-        this.update(row, column);
-    }
+        if(column < 1 || column > contents[0].length)
+            throw new InvalidPositionException(String.format("Column must be between 1 and %d", contents.length), column);
 
-    public void setItems(ClickableItem item, int... slots) {
-
-        if(slots.length == 0)
-            throw new IllegalArgumentException("No slots specified.");
-
-        for(int slot : slots) this.setItem(slot, item);
-    }
-
-    public Optional<ClickableItem> getItem(int slot) {
-
-        SimpleInventory inventory = this.getInventory();
-
-        SlotValidator.validateSlot(inventory, slot);
-
-        int row = SlotUtils.getRow(inventory.getType(), slot);
-        int column = SlotUtils.getColumn(inventory.getType(), slot);
-
-        ClickableItem item = this.contents[row][column];
-
-        return item == null ? Optional.empty() : Optional.of(item);
-    }
-
-    public Optional<ClickableItem> getItem(int row, int column) {
-
-        SlotValidator.validatePosition(this.getInventory(), row, column);
-
-        ClickableItem item =  this.contents[row - 1][column - 1];
-
-        return item == null ? Optional.empty() : Optional.of(item);
-    }
-
-    private void update(int slot) {
-
-        SimpleInventory inventory = this.getInventory();
-
-        Optional<ClickableItem> optional = this.getItem(slot);
-        ItemStack stack = optional.map(ClickableItem::getItemStack).orElse(null);
-
-        inventory.getInventory().setItem(slot, stack);
-    }
-
-    private void update(int row, int column) {
-
-        SimpleInventory inventory = this.getInventory();
-
-        int slot = SlotUtils.getSlot(inventory.getType(), row, column);
-
-        Optional<ClickableItem> optional = this.getItem(slot);
-
-        ItemStack stack = optional.map(ClickableItem::getItemStack).orElse(null);
-
-        inventory.getInventory().setItem(slot, stack);
-    }
-
-    public ClickableItem[][] getContents() {
-        return Arrays.copyOf(this.contents, this.contents.length);
+        for(int row = 1; row < contents.length; row++)
+            this.setItem(row, column, item);
     }
 }
