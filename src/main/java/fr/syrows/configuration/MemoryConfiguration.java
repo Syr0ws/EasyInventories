@@ -14,9 +14,13 @@
  *    limitations under the License.
  */
 
-package fr.syrows.easyinventories.tools;
+package fr.syrows.configuration;
 
-public enum CloseReason {
+import java.util.Map;
 
-    CLOSE_ALL, OPEN_CHILD, OPEN_PARENT;
+public interface MemoryConfiguration extends ConfigurationSection {
+
+    void addDefaultValue(String path, Object object);
+
+    void addDefaultValues(Map<String, Object> values);
 }

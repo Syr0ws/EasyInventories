@@ -14,9 +14,15 @@
  *    limitations under the License.
  */
 
-package fr.syrows.easyinventories.tools;
+package fr.syrows.configuration;
 
-public enum CloseReason {
+public interface FileConfigProvider<T extends FileConfiguration> {
 
-    CLOSE_ALL, OPEN_CHILD, OPEN_PARENT;
+    void registerConfig(ConfigKey key, T config);
+
+    void unregisterConfig(ConfigKey key);
+
+    boolean isRegistered(ConfigKey key);
+
+    T getConfig(ConfigKey key);
 }

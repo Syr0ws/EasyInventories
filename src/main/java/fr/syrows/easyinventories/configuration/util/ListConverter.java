@@ -14,9 +14,18 @@
  *    limitations under the License.
  */
 
-package fr.syrows.easyinventories.tools;
+package fr.syrows.easyinventories.configuration.util;
 
-public enum CloseReason {
+import java.util.List;
 
-    CLOSE_ALL, OPEN_CHILD, OPEN_PARENT;
+public class ListConverter {
+
+    public static int[] getIntArray(List<Integer> list) {
+
+        int[] array = new int[list.size()];
+
+        for(int i = 0; i < array.length; i++) array[i] = list.get(i);
+
+        return array;
+    }
 }

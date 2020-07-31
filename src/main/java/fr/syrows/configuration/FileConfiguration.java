@@ -14,9 +14,11 @@
  *    limitations under the License.
  */
 
-package fr.syrows.easyinventories.tools;
+package fr.syrows.configuration;
 
-public enum CloseReason {
+public interface FileConfiguration extends MemoryConfiguration {
 
-    CLOSE_ALL, OPEN_CHILD, OPEN_PARENT;
+    void load();
+
+    void save();
 }

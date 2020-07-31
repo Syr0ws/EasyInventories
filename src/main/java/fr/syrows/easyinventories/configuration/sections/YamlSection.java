@@ -14,9 +14,22 @@
  *    limitations under the License.
  */
 
-package fr.syrows.easyinventories.tools;
+package fr.syrows.easyinventories.configuration.sections;
 
-public enum CloseReason {
+import fr.syrows.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
 
-    CLOSE_ALL, OPEN_CHILD, OPEN_PARENT;
+public interface YamlSection extends ConfigurationSection {
+
+    ItemStack getItemStack(String path);
+
+    ItemSection getItemSection(String path);
+
+    PaginationSection getPaginationSection(String path);
+
+    @Override
+    YamlSection getParent();
+
+    @Override
+    YamlSection getSection(String path);
 }

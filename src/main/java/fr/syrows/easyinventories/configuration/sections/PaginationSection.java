@@ -14,9 +14,15 @@
  *    limitations under the License.
  */
 
-package fr.syrows.easyinventories.tools;
+package fr.syrows.easyinventories.configuration.sections;
 
-public enum CloseReason {
+import fr.syrows.easyinventories.contents.pagination.PageItem;
+import fr.syrows.easyinventories.contents.pagination.PaginationSettings;
+import fr.syrows.easyinventories.inventories.impl.PageableInventory;
 
-    CLOSE_ALL, OPEN_CHILD, OPEN_PARENT;
+public interface PaginationSection {
+
+    PageItem getPageItem(PageableInventory<?> inventory, PageItem.PageType type, boolean replacement);
+
+    PaginationSettings getSettings();
 }
