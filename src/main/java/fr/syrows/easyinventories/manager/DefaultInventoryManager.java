@@ -50,14 +50,12 @@ import java.util.Optional;
 
 public class DefaultInventoryManager implements InventoryManager {
 
-    public static final List<InventoryCreator> creators = new ArrayList<>();
-
     static {
-        creators.add(new ChestInventoryCreator());
-        creators.add(new CommonInventoryCreator());
+        InventoryCreator.creators.add(new ChestInventoryCreator());
+        InventoryCreator.creators.add(new CommonInventoryCreator());
     }
 
-    private Plugin plugin;
+    private Plugin plugin; // Needed in the PluginDisableEvent.
     private Map<Player, SimpleInventory> inventories = new HashMap<>();
 
     public DefaultInventoryManager(Plugin plugin) {
@@ -65,7 +63,7 @@ public class DefaultInventoryManager implements InventoryManager {
         this.plugin = plugin;
 
         PluginManager pm = Bukkit.getPluginManager();
-        pm.registerEvents(new InventoryListeners(), this.plugin);
+        pm.registerEvents(new InventoryListeners(), this.plugin); // Registering listener class.
     }
 
     @Override
@@ -101,19 +99,6 @@ public class DefaultInventoryManager implements InventoryManager {
     @Override
     public boolean hasOpenedInventory(Player player) {
         return this.inventories.containsKey(player);
-    }
-
-    @Override
-    public InventoryCreator findCreator(InventorySort sort) {
-
-        Optional<InventoryCreator> optional = creators.stream()
-                .filter(creator -> creator.isSupported(sort))
-                .findFirst();
-
-        if(!optional.isPresent())
-            throw new NullPointerException(String.format("No creator found for type '%s'.", sort.getInventoryType().name()));
-
-        return optional.get();
     }
 
     @Override

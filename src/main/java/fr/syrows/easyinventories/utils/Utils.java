@@ -22,6 +22,13 @@ import java.util.List;
 
 public class Utils {
 
+    /**
+     * Parse the colors of the specified String.
+     *
+     * @param string an object of type String to parse.
+     *
+     * @return the parsed String.
+     */
     public static String parseColors(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);
     }

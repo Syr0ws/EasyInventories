@@ -34,10 +34,11 @@ public class CommonInventoryCreator implements InventoryCreator {
     @Override
     public Inventory getInventory(SimpleInventory inventory) {
 
-        String title = Utils.parseColors(inventory.getTitle());
+        String title = Utils.parseColors(inventory.getTitle()); // Parsing inventory's title.
 
         InventorySort sort = inventory.getSort();
 
+        // Returning a Bukkit inventory using an InventoryType.
         return Bukkit.createInventory(null, sort.getInventoryType(), title);
     }
 

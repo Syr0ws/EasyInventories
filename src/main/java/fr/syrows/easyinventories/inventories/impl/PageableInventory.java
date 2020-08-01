@@ -56,6 +56,9 @@ public abstract class PageableInventory<T> extends AbstractInventory implements 
     @Override
     public void openPage(Pagination<T>.Page page) {
 
+        if(page == null)
+            throw new NullPointerException("Page cannot be null.");
+
         this.opened = page;
 
         PageableInventoryContents<T> contents = this.getContents();

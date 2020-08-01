@@ -25,12 +25,24 @@ import java.util.stream.Collectors;
 
 public class ItemUtils {
 
+    /**
+     * Parse the display name and the lore of an ItemStack using the specified StringParser.
+     *
+     * @param stack the item to parse.
+     * @param parser the parser to use.
+     */
     public static void parseAll(ItemStack stack, StringParser parser) {
 
         ItemUtils.parseName(stack, parser);
         ItemUtils.parseLore(stack, parser);
     }
 
+    /**
+     * Parse the display name of an ItemStack using the specified StringParser.
+     *
+     * @param stack the item to parse.
+     * @param parser the parser to use.
+     */
     public static void parseName(ItemStack stack, StringParser parser) {
 
         if(!stack.hasItemMeta()) return;
@@ -39,13 +51,19 @@ public class ItemUtils {
 
         if(meta.hasDisplayName()) {
 
-            String displayName = parser.apply(meta.getDisplayName());
+            String displayName = parser.apply(meta.getDisplayName()); // Applying parse.
             meta.setDisplayName(displayName);
 
             stack.setItemMeta(meta);
         }
     }
 
+    /**
+     * Parse the lore of an ItemStack using the specified StringParser.
+     *
+     * @param stack the item to parse.
+     * @param parser the parser to use.
+     */
     public static void parseLore(ItemStack stack, StringParser parser) {
 
         if(!stack.hasItemMeta()) return;
@@ -54,7 +72,11 @@ public class ItemUtils {
 
         if(meta.hasLore()) {
 
-            List<String> lore = meta.getLore().stream().map(parser::apply).collect(Collectors.toList());
+            // Applying parse on each line of the lore and collecting them.
+            List<String> lore = meta.getLore().stream()
+                    .map(parser::apply)
+                    .collect(Collectors.toList());
+
             meta.setLore(lore);
 
             stack.setItemMeta(meta);
