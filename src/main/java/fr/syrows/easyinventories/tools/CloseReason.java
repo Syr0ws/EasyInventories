@@ -16,7 +16,23 @@
 
 package fr.syrows.easyinventories.tools;
 
+/**
+ * This enum is used to specify the reason of the closure of an inventory.
+ */
 public enum CloseReason {
 
-    CLOSE_ALL, OPEN_CHILD, OPEN_PARENT;
+    /**
+     * Reason used when a inventory is definitely closed.
+     */
+    CLOSE_ALL,
+    /**
+     * Reason used when an inventory is closed to open one of its child inventory.
+     * It is only used for a TreeInventory.
+     */
+    OPEN_CHILD,
+    /**
+     * Reason used when an inventory is closed to open its parent inventory.
+     * It is only used for a TreeInventory.
+     */
+    OPEN_PARENT;
 }

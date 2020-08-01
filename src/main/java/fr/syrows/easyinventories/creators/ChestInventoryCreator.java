@@ -28,10 +28,11 @@ public class ChestInventoryCreator implements InventoryCreator {
     @Override
     public Inventory getInventory(SimpleInventory inventory) {
 
-        String title = Utils.parseColors(inventory.getTitle());
+        String title = Utils.parseColors(inventory.getTitle()); // Parsing inventory's title.
 
         int size = inventory.getSize();
 
+        // Returning a Bukkit inventory using a size.
         return Bukkit.createInventory(null, size, title);
     }
 
