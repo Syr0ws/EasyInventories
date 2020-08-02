@@ -18,5 +18,10 @@ package fr.syrows.easyinventories.iterators;
 
 public interface SlotIteratorType {
 
+    /**
+     * The class of the SlotIterator this type corresponds to.
+     *
+     * @return a class that extends SlotIterator.
+     */
     Class<? extends SlotIterator> getIteratorClass();
 }

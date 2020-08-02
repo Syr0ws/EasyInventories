@@ -17,9 +17,9 @@
 package fr.syrows.easyinventories.inventories.impl;
 
 import fr.syrows.easyinventories.contents.PageableInventoryContents;
+import fr.syrows.easyinventories.contents.pagination.Pagination;
 import fr.syrows.easyinventories.manager.InventoryManager;
 import fr.syrows.easyinventories.contents.pagination.Pageable;
-import fr.syrows.easyinventories.contents.pagination.Pagination;
 import fr.syrows.easyinventories.contents.pagination.PaginationSettings;
 import fr.syrows.easyinventories.tools.InventoryValidator;
 import org.bukkit.entity.Player;

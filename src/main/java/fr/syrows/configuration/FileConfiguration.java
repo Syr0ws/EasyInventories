@@ -18,7 +18,14 @@ package fr.syrows.configuration;
 
 public interface FileConfiguration extends MemoryConfiguration {
 
+    /**
+     * Load a configuration from a file. It can be a resource or
+     * an external file.
+     */
     void load();
 
+    /**
+     * Save a configuration into a file.
+     */
     void save();
 }

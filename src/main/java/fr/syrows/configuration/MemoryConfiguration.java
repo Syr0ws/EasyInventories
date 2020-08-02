@@ -20,7 +20,19 @@ import java.util.Map;
 
 public interface MemoryConfiguration extends ConfigurationSection {
 
+    /**
+     * Add a default value at the specified path to the configuration.
+     *
+     * @param path a String that represents the path of the value.
+     * @param object the value to set at the specified path.
+     */
     void addDefaultValue(String path, Object object);
 
+    /**
+     * Add many values to the default configuration.
+     *
+     * @param values a Map which has as key the paths and as values the values to set
+     *               at the given paths.
+     */
     void addDefaultValues(Map<String, Object> values);
 }

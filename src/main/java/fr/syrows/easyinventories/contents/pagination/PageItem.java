@@ -34,23 +34,12 @@ public class PageItem {
 
     public PageItem(PageableInventory<?> container, PageType type, ItemStack stack, int slot) {
 
-        SlotValidator.validateSlot(container, slot);
+        SlotValidator.validateSlot(container, slot); // Checking slot.
 
         this.container = container;
         this.type = type;
         this.stack = stack;
         this.slot = slot;
-    }
-
-    public PageItem(PageableInventory<?> container, PageType type, ItemStack stack, int row, int column) {
-
-        SlotValidator.validateRow(container, row);
-        SlotValidator.validateColumn(container, column);
-
-        this.container = container;
-        this.type = type;
-        this.stack = stack;
-        this.slot = SlotUtils.getSlot(container.getSort(), row, column);
     }
 
     public ClickableItem getItem() {
@@ -71,7 +60,7 @@ public class PageItem {
         NEXT("next_page", PageableInventory::nextPage);
 
         private String identifier;
-        private Consumer<PageableInventory<?>> consumer;
+        private Consumer<PageableInventory<?>> consumer; // Action performed when a player clicks on the item.
 
         PageType(String identifier, Consumer<PageableInventory<?>> consumer) {
             this.identifier = identifier;

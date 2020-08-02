@@ -24,6 +24,7 @@ public class ListConverter {
 
         int[] array = new int[list.size()];
 
+        // Cannot use the toArray method because of type incompatibility.
         for(int i = 0; i < array.length; i++) array[i] = list.get(i);
 
         return array;

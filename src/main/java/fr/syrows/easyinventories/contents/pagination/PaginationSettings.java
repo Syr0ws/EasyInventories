@@ -34,26 +34,56 @@ public class PaginationSettings {
         this.blacklisted = builder.blacklisted;
     }
 
+    /**
+     * The row at which the pagination will begin.
+     *
+     * @return an int. Begins at 1.
+     */
     public int getBeginRow() {
         return this.beginRow;
     }
 
+    /**
+     * The column at which the pagination will begin.
+     *
+     * @return an int. Begins at 1.
+     */
     public int getBeginColumn() {
         return this.beginColumn;
     }
 
+    /**
+     * The row at which the pagination will end.
+     *
+     * @return an int.
+     */
     public int getEndRow() {
         return this.endRow;
     }
 
+    /**
+     * The column at which the pagination will end.
+     *
+     * @return an int.
+     */
     public int getEndColumn() {
         return this.endColumn;
     }
 
+    /**
+     * Count the number of slots which will be paginated.
+     *
+     * @return an int.
+     */
     public int countSlots() {
         return ((this.endRow - this.beginRow + 1) * (this.endColumn - this.beginColumn + 1)) - this.blacklisted.length;
     }
 
+    /**
+     * Returns an array of blacklisted slots. These slots will not be paginated.
+     *
+     * @return an array of int.
+     */
     public int[] getBlacklisted() {
         return Arrays.copyOf(this.blacklisted, this.blacklisted.length);
     }

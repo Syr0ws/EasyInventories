@@ -20,7 +20,7 @@ import java.nio.file.Path;
 
 public class ConfigDataContainer {
 
-    private String data;
+    private String data; // Data of the resource file.
     private Path path;
 
     public ConfigDataContainer(String data) {

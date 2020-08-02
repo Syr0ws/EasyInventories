@@ -33,10 +33,20 @@ public class SimpleInventoryOpenEvent extends Event implements SimpleInventoryEv
         this.inventory = inventory;
     }
 
+    /**
+     * Get the player for whom the inventory will be opened.
+     *
+     * @return a Player object.
+     */
     public Player getPlayer() {
         return this.player;
     }
 
+    /**
+     * Get the inventory which will be opened.
+     *
+     * @return a SimpleInventory object.
+     */
     @Override
     public SimpleInventory getSimpleInventory() {
         return this.inventory;

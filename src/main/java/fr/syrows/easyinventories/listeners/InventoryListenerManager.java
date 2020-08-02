@@ -25,26 +25,56 @@ public class InventoryListenerManager {
 
     private List<InventoryListener<? extends SimpleInventoryEvent>> listeners;
 
+    /**
+     * Create a new InventoryListenerManager object.
+     */
     public InventoryListenerManager() {
         this.listeners = new ArrayList<>();
     }
 
+    /**
+     * Register a listener.
+     *
+     * @param listener the listener you want to register.
+     */
     public void addListener(InventoryListener<? extends SimpleInventoryEvent> listener) {
         this.listeners.add(listener);
     }
 
+    /**
+     * Unregister a listener.
+     *
+     * @param listener the listener you want to unregister.
+     */
     public void removeListener(InventoryListener<? extends SimpleInventoryEvent> listener) {
         this.listeners.remove(listener);
     }
 
-    public void removeListeners(Class<? extends InventoryListener<? extends SimpleInventoryEvent>> type) {
+    /**
+     * Unregister a listener using its class.
+     *
+     * @param type the class of the listener you want to unregister.
+     */
+    public void removeListener(Class<? extends InventoryListener<? extends SimpleInventoryEvent>> type) {
         this.listeners.removeIf(listener -> listener.getClass().equals(type));
     }
 
+    /**
+     * Check if a listener is registered using its class.
+     *
+     * @param type the class of the listener you want to check.
+     * @return true if there is an instance of the class specified registered or else false.
+     */
     public boolean hasListener(Class<? extends InventoryListener<? extends SimpleInventoryEvent>> type) {
         return this.listeners.stream().anyMatch(listener -> listener.getClass().equals(type));
     }
 
+    /**
+     * Accept an event. If no listener listen this event, no action will be performed.
+     *
+     * @param event the event to accept.
+     * @param <T> the type of the event.
+     */
     @SuppressWarnings("unchecked")
     public <T extends SimpleInventoryEvent> void accept(T event) {
         this.listeners.stream()

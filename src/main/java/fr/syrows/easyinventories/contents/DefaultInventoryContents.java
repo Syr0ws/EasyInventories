@@ -19,6 +19,8 @@ package fr.syrows.easyinventories.contents;
 import fr.syrows.easyinventories.contents.items.ClickableItem;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
 import fr.syrows.easyinventories.iterators.SlotIterator;
+import fr.syrows.easyinventories.iterators.SlotIteratorEnum;
+import fr.syrows.easyinventories.iterators.SlotIteratorFactory;
 import fr.syrows.easyinventories.tools.SlotValidator;
 import fr.syrows.easyinventories.utils.SlotUtils;
 import org.bukkit.inventory.ItemStack;
@@ -126,10 +128,18 @@ public class DefaultInventoryContents implements InventoryContents {
         this.inventory.getInventory().setItem(slot, stack);
     }
 
-    // TODO
     @Override
     public SlotIterator getContentsIterator() {
-        return null;
+
+        return SlotIteratorFactory.getIterator(
+                SlotIteratorEnum.HORIZONTAL,
+                this.inventory,
+                1,
+                1,
+                this.contents.length,
+                this.contents[0].length
+
+        );
     }
 
     @Override

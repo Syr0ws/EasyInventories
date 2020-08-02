@@ -23,6 +23,19 @@ import java.lang.reflect.InvocationTargetException;
 
 public class SlotIteratorFactory {
 
+    /**
+     * Create a new SlotIterator.
+     *
+     * @param type the type of iterator you want to get.
+     * @param inventory the inventory in which the iterator will iterate.
+     * @param beginRow the begin row of the iterator.
+     * @param beginColumn the begin column of the iterator.
+     * @param endRow the end row of the iterator.
+     * @param endColumn the end column of the iterator.
+     * @param blacklisted an array of blacklisted slots. The iterator will not iterate over these slots.
+     *
+     * @return an object of type SlotIterator according to the type specified.
+     */
     public static SlotIterator getIterator(SlotIteratorType type, SimpleInventory inventory, int beginRow, int beginColumn, int endRow, int endColumn, int... blacklisted) {
 
         Class<? extends SlotIterator> iteratorClass = type.getIteratorClass();
