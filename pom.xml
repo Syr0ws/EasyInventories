@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.syrows.easyinventories</groupId>
     <artifactId>EasyInventories</artifactId>
-    <version>0.17.2</version>
+    <version>0.17.3</version>
     <repositories>
         <!-- This adds the Spigot Maven repository to the build -->
         <repository>

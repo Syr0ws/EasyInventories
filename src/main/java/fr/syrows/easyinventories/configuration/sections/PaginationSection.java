@@ -24,5 +24,11 @@ public interface PaginationSection {
 
     PageItem getPageItem(PageableInventory<?> inventory, PageItem.PageType type, boolean replacement);
 
+    /**
+     * Get the requested PaginationSettings by path.
+     *
+     * @return the requested PaginationSettings.
+     * @throws NullPointerException if the path was found.
+     */
     PaginationSettings getSettings();
 }

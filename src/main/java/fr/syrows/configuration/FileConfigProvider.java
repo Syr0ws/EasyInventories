@@ -24,6 +24,7 @@ public interface FileConfigProvider<T extends FileConfiguration> {
      *
      * @param key the key to access the configuration.
      * @param config the configuration to register.
+     * @throws UnsupportedOperationException if a config with this key is already registered.
      */
     void registerConfig(ConfigKey key, T config);
 
@@ -37,10 +38,9 @@ public interface FileConfigProvider<T extends FileConfiguration> {
 
     /**
      * Check if a configuration is registered by using its access key.
-     * @param key the key to access the configuration.
      *
-     * @return true if the configuration pointed by the key is registered
-     *         or else false.
+     * @param key the key to access the configuration.
+     * @return true if the configuration pointed by the key is registered or else false.
      */
     boolean isRegistered(ConfigKey key);
 
@@ -48,7 +48,7 @@ public interface FileConfigProvider<T extends FileConfiguration> {
      * Get a configuration using its access key.
      *
      * @param key the key to access the configuration.
-     *
+     * @throws NullPointerException if not config is registered with this key.
      * @return a T object is the configuration is registered or else null.
      */
     T getConfig(ConfigKey key);

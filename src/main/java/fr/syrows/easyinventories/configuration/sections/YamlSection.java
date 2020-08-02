@@ -21,15 +21,49 @@ import org.bukkit.inventory.ItemStack;
 
 public interface YamlSection extends ConfigurationSection {
 
+    /**
+     * Get the requested ItemStack by path.
+     *
+     * @param path the path of the itemStack to get.
+     * @return the ItemStack requested.
+     * @throws NullPointerException if the path was found.
+     */
     ItemStack getItemStack(String path);
 
+    /**
+     * Get the requested ItemSection by path.
+     *
+     * @param path the path of the ItemSection to get.
+     * @return the ItemSection requested.
+     * @throws NullPointerException if the path was found.
+     */
     ItemSection getItemSection(String path);
 
+    /**
+     * Get the requested PaginationSection by path.
+     *
+     * @param path the path of the PaginationSection to get.
+     * @return the PaginationSection requested.
+     * @throws NullPointerException if the path was found.
+     */
     PaginationSection getPaginationSection(String path);
 
+    /**
+     * Get the parent of this section as YamlSection.
+     *
+     * @return the parent of the section if it has one or else null.
+     */
     @Override
     YamlSection getParent();
 
+    /**
+     * Get the requested YamlSection by path.
+     *
+     * @param path the path of the YamlSection to get.
+     * @return the requested YamlSection.
+     *
+     * @throws NullPointerException if the path was found.
+     */
     @Override
     YamlSection getSection(String path);
 }
