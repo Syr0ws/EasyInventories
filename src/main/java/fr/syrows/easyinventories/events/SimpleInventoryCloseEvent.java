@@ -36,14 +36,29 @@ public class SimpleInventoryCloseEvent extends Event implements SimpleInventoryE
         this.reason = reason;
     }
 
+    /**
+     * Get the player for whom his inventory has been closed.
+     *
+     * @return a Player object.
+     */
     public Player getPlayer() {
         return this.player;
     }
 
+    /**
+     * Get the reason of the inventory closure.
+     *
+     * @return the reason of the closure.
+     */
     public CloseReason getReason() {
         return this.reason;
     }
 
+    /**
+     * Get the inventory closed.
+     *
+     * @return a SimpleInventory object.
+     */
     @Override
     public SimpleInventory getSimpleInventory() {
         return this.inventory;

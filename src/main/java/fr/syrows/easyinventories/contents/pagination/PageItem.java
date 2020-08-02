@@ -42,17 +42,6 @@ public class PageItem {
         this.slot = slot;
     }
 
-    public PageItem(PageableInventory<?> container, PageType type, ItemStack stack, int row, int column) {
-
-        SlotValidator.validateRow(container, row); // Checking row coordinate.
-        SlotValidator.validateColumn(container, column); // Checking column coordinate.
-
-        this.container = container;
-        this.type = type;
-        this.stack = stack;
-        this.slot = SlotUtils.getSlot(container.getSort(), row, column);
-    }
-
     public ClickableItem getItem() {
 
         String identifier = this.type.getIdentifier();

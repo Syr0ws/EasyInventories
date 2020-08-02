@@ -25,19 +25,40 @@ public class InventoryListener<T extends SimpleInventoryEvent> {
     private Class<T> type;
     private Consumer<T> consumer;
 
+    /**
+     * Create a new InventoryListener object.
+     *
+     * @param type the class of the listener.
+     * @param consumer the consumer which will be performed when the listener is called.
+     */
     public InventoryListener(Class<T> type, Consumer<T> consumer) {
         this.type = type;
         this.consumer = consumer;
     }
 
+    /**
+     * The type of the listener.
+     *
+     * @return a class of type T.
+     */
     public Class<T> getType() {
         return this.type;
     }
 
+    /**
+     * The consumer to perform when the listener is called.
+     *
+     * @return a consumer of type T.
+     */
     public Consumer<T> getConsumer() {
         return this.consumer;
     }
 
+    /**
+     * The event to accept with the consumer.
+     *
+     * @param event an object of type T.
+     */
     public void accept(T event) {
         this.consumer.accept(event);
     }

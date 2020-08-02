@@ -35,11 +35,22 @@ public class SimpleInventoryClickEvent extends InventoryClickEvent implements Si
         this.inventory = inventory;
     }
 
+    /**
+     * Returns the clicked inventory.
+     *
+     * @return a SimpleInventory object.
+     */
     @Override
     public SimpleInventory getSimpleInventory() {
         return this.inventory;
     }
 
+    /**
+     * Returns an optional that contains the clicked item.
+     * If the clicked item is null, the an empty optional will be returned.
+     *
+     * @return an Optional.
+     */
     public Optional<ClickableItem> getClickableItem() {
 
         InventoryContents contents = this.inventory.getContents();

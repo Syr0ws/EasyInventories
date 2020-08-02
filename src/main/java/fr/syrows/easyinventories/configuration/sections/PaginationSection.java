@@ -22,6 +22,16 @@ import fr.syrows.easyinventories.inventories.impl.PageableInventory;
 
 public interface PaginationSection {
 
+    /**
+     * Get the requested PageItem by path.
+     *
+     * @param inventory the inventory in which the item will be set.
+     * @param type the type of page of the item.
+     * @param replacement If true, the item which will be used is the one when there is no previous/next page.
+     *                    If false, the item which will be used is the one when there is a previous/next page.
+     *
+     * @return the requested PageItem.
+     */
     PageItem getPageItem(PageableInventory<?> inventory, PageItem.PageType type, boolean replacement);
 
     /**
