@@ -16,12 +16,17 @@
 
 package fr.syrows.easyinventories.inventories.impl;
 
+import fr.syrows.easyinventories.builders.AbstractInventoryBuilder;
+import fr.syrows.easyinventories.builders.InventoryBuilder;
 import fr.syrows.easyinventories.contents.DefaultInventoryContents;
 import fr.syrows.easyinventories.contents.InventoryContents;
 import fr.syrows.easyinventories.contents.sort.InventorySortType;
+import fr.syrows.easyinventories.creators.InventoryCreator;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
 import fr.syrows.easyinventories.manager.InventoryManager;
 import org.bukkit.inventory.Inventory;
+
+import java.util.Optional;
 
 public class FastInventory extends AbstractInventory implements SimpleInventory {
 
@@ -66,9 +71,9 @@ public class FastInventory extends AbstractInventory implements SimpleInventory 
         return this.inventory;
     }
 
-    public static class InventoryBuilder extends InventoryInventoryBuilder<InventoryBuilder, FastInventory> {
+    public static class Builder extends InventoryBuilder<InventoryBuilder, FastInventory> {
 
-        public InventoryBuilder(InventoryManager manager) {
+        public Builder(InventoryManager manager) {
             super(manager);
         }
 
@@ -82,7 +87,12 @@ public class FastInventory extends AbstractInventory implements SimpleInventory 
             inventory.size = super.size;
             inventory.sort = super.sort;
 
-            inventory.inventory = super.manager.findCreator(super.sort).getInventory(inventory);
+            Optional<InventoryCreator> optional = InventoryCreator.findCreator(super.sort);
+
+            if(!optional.isPresent())
+                throw new NullPointerException(String.format("No creator found for sort '%s'.", super.sort.getInventoryType().name()));
+
+            inventory.inventory = optional.get().getInventory(inventory);
             inventory.contents = new DefaultInventoryContents(inventory);
 
             return inventory;

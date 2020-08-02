@@ -18,11 +18,38 @@ package fr.syrows.configuration;
 
 public interface FileConfigProvider<T extends FileConfiguration> {
 
+    /**
+     * Register a configuration using an access key which will be used to
+     * access it later.
+     *
+     * @param key the key to access the configuration.
+     * @param config the configuration to register.
+     */
     void registerConfig(ConfigKey key, T config);
 
+    /**
+     * Unregister a configuration using its access key. If the configuration
+     * doesn't exists, no action will be performed.
+     *
+     * @param key the key to access the configuration.
+     */
     void unregisterConfig(ConfigKey key);
 
+    /**
+     * Check if a configuration is registered by using its access key.
+     * @param key the key to access the configuration.
+     *
+     * @return true if the configuration pointed by the key is registered
+     *         or else false.
+     */
     boolean isRegistered(ConfigKey key);
 
+    /**
+     * Get a configuration using its access key.
+     *
+     * @param key the key to access the configuration.
+     *
+     * @return a T object is the configuration is registered or else null.
+     */
     T getConfig(ConfigKey key);
 }

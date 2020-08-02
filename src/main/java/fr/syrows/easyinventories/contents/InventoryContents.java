@@ -35,8 +35,8 @@ public interface InventoryContents {
     /**
      * Set a ClickableItem at the specified rows and columns.
      *
-     * @param row the row to which set the item.
-     * @param column the column to which set the item.
+     * @param row the row to which set the item. Begins at index 1.
+     * @param column the column to which set the item. Begins at index 1.
      * @param item the item to set.
      */
     void setItem(int row, int column, ClickableItem item);
@@ -49,8 +49,25 @@ public interface InventoryContents {
      */
     void setItems(ClickableItem item, int... slots);
 
+    /**
+     * Get the item at the specified slot encapsulate into an Optional.
+     * If there is not item at the specified slot, the method will return
+     * an empty Optional.
+     *
+     * @param slot the slot of the inventory you want to retrieve the item. Begins at index 0.
+     * @return an Optional.
+     */
     Optional<ClickableItem> getItem(int slot);
 
+    /**
+     * Get the item at the specified pair (row, column) encapsulate into an Optional.
+     * If there is not item at the specified slot, the method will return an empty Optional.
+     *
+     * @param row the row coordinate. Begins at index 0.
+     * @param column the column coordinate. Begins at index 1.
+     *
+     * @return an Optional.
+     */
     Optional<ClickableItem> getItem(int row, int column);
 
     /**
@@ -85,10 +102,27 @@ public interface InventoryContents {
      */
     void update(int row, int column);
 
+    /**
+     * Returns a SlotIterator object which can be used to iterate through all the slots of an inventory.
+     * The type of this iterator is HORIZONTAL.
+     *
+     * @return an object of type SlotIterator.
+     */
     SlotIterator getContentsIterator();
 
+    /**
+     * Returns a two dimensional array that stores all the items of an inventory.
+     * This array is a copy of the original one.
+     *
+     * @return a two dimensional array of ClickableItem objects.
+     */
     ClickableItem[][] getContents();
 
+    /**
+     * Fill the empty slots with the specified item.
+     *
+     * @param item the item to fill empty slots with.
+     */
     default void fillEmptySlots(ClickableItem item) {
 
         ClickableItem[][] contents = this.getContents();
@@ -102,6 +136,14 @@ public interface InventoryContents {
         }
     }
 
+    /**
+     * Fill an entire row with the specified item.
+     *
+     * @param row the row to fill. Begins at index 1.
+     * @param item the item to fill the row with.
+     *
+     * @throws InvalidPositionException if the row number is invalid (row < 1 || row > getContents().length).
+     */
     default void fillRow(int row, ClickableItem item) {
 
         ClickableItem[][] contents = this.getContents();
@@ -113,6 +155,14 @@ public interface InventoryContents {
             this.setItem(row, column, item);
     }
 
+    /**
+     * Fill an entire column with the specified item.
+     *
+     * @param column the column to fill. Begins at index 1.
+     * @param item the item to fill the column with.
+     *
+     * @throws InvalidPositionException if the column number is invalid (column < 1 || column > getContents()[0].length).
+     */
     default void fillColumn(int column, ClickableItem item) {
 
         ClickableItem[][] contents = this.getContents();

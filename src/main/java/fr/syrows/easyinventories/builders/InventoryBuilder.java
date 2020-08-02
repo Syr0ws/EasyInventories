@@ -20,14 +20,14 @@ import fr.syrows.easyinventories.contents.sort.InventorySortType;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
 import fr.syrows.easyinventories.manager.InventoryManager;
 
-public abstract class InventoryInventoryBuilder<SELF, T extends SimpleInventory> implements AbstractInventoryBuilder<SELF, T> {
+public abstract class InventoryBuilder<SELF, T extends SimpleInventory> implements AbstractInventoryBuilder<SELF, T> {
 
     protected InventoryManager manager;
     protected String identifier, title;
     protected InventorySortType sort;
     protected int size;
 
-    public InventoryInventoryBuilder(InventoryManager manager) {
+    public InventoryBuilder(InventoryManager manager) {
 
         this.manager = manager;
 

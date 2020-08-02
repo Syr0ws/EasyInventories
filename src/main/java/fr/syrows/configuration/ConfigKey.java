@@ -16,7 +16,16 @@
 
 package fr.syrows.configuration;
 
+/**
+ * This interface represents a key used to identify and to access
+ * configurations.
+ */
 public interface ConfigKey {
 
+    /**
+     * The key used to access the configuration.
+     *
+     * @return a String.
+     */
     String getKey();
 }
