@@ -19,6 +19,7 @@ package fr.syrows.easyinventories.manager;
 import fr.syrows.easyinventories.inventories.SimpleInventory;
 import fr.syrows.easyinventories.tools.CloseReason;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,6 +80,8 @@ public interface InventoryManager {
      * @return a List of Player objects.
      */
     List<Player> getViewers();
+
+    Inventory createInventory(SimpleInventory inventory);
 
     /**
      * Get all the players that have an opened inventory with the id specified.

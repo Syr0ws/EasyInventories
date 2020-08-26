@@ -62,9 +62,7 @@ public abstract class PageableInventory<T> extends AbstractInventory implements 
         this.opened = page;
 
         PageableInventoryContents<T> contents = this.getContents();
-
-        contents.updatePageContents();
-        contents.updatePageItems();
+        contents.updatePagination();
     }
 
     @Override
@@ -78,6 +76,11 @@ public abstract class PageableInventory<T> extends AbstractInventory implements 
         this.openPage(toOpen);
 
         super.open(player);
+    }
+
+    @Override
+    public Pagination<T>.Page getOpenedPage() {
+        return this.opened;
     }
 
     private void validate() {

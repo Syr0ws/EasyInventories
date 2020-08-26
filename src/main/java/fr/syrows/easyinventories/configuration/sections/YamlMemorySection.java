@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.NumberConversions;
 
 import java.util.List;
+import java.util.Set;
 
 public class YamlMemorySection implements YamlSection {
 
@@ -92,7 +93,9 @@ public class YamlMemorySection implements YamlSection {
 
     @Override
     public double getDouble(String path) {
+
         this.validatePath(path);
+
         return this.section.getDouble(path);
     }
 
@@ -137,7 +140,7 @@ public class YamlMemorySection implements YamlSection {
     }
 
     @Override
-    public List<Float> getListFloat(String path) {
+    public List<Float> getFloatList(String path) {
 
         this.validatePath(path);
 
@@ -166,11 +169,106 @@ public class YamlMemorySection implements YamlSection {
     }
 
     @Override
+    public boolean isString(String path) {
+
+        this.validatePath(path);
+
+        return this.section.isString(path);
+    }
+
+    @Override
+    public boolean isInt(String path) {
+
+        this.validatePath(path);
+
+        return this.section.isInt(path);
+    }
+
+    @Override
+    public boolean isByte(String path) {
+
+        this.validatePath(path);
+
+        return this.section.get(path) instanceof Byte;
+    }
+
+    @Override
+    public boolean isShort(String path) {
+
+        this.validatePath(path);
+
+        return this.section.get(path) instanceof Short;
+    }
+
+    @Override
+    public boolean isLong(String path) {
+
+        this.validatePath(path);
+
+        return this.section.isLong(path);
+    }
+
+    @Override
+    public boolean isFloat(String path) {
+
+        this.validatePath(path);
+
+        return this.section.get(path) instanceof Float;
+    }
+
+    @Override
+    public boolean isDouble(String path) {
+
+        this.validatePath(path);
+
+        return this.section.isDouble(path);
+    }
+
+    @Override
+    public boolean isBoolean(String path) {
+
+        this.validatePath(path);
+
+        return this.section.isBoolean(path);
+    }
+
+    @Override
+    public boolean isList(String path) {
+
+        this.validatePath(path);
+
+        return this.section.isList(path);
+    }
+
+    @Override
+    public boolean isSection(String path) {
+
+        this.validatePath(path);
+
+        return this.section.isConfigurationSection(path);
+    }
+
+    @Override
+    public Set<String> getPaths() {
+        return this.section.getKeys(true);
+    }
+
+    @Override
+    public Set<String> getSubPaths() {
+        return this.section.getKeys(false);
+    }
+
+    @Override
     public YamlSection getSection(String path) {
 
         this.validatePath(path);
 
         return new YamlMemorySection(this.section.getConfigurationSection(path));
+    }
+
+    @Override
+    public YamlSection getRoot() {
+        return new YamlMemorySection(this.section.getRoot());
     }
 
     @Override

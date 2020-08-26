@@ -16,8 +16,6 @@
 
 package fr.syrows.easyinventories.inventories.impl;
 
-import fr.syrows.easyinventories.builders.AbstractInventoryBuilder;
-import fr.syrows.easyinventories.builders.InventoryBuilder;
 import fr.syrows.easyinventories.contents.DefaultInventoryContents;
 import fr.syrows.easyinventories.contents.InventoryContents;
 import fr.syrows.easyinventories.contents.sort.InventorySortType;
@@ -71,26 +69,57 @@ public class FastInventory extends AbstractInventory implements SimpleInventory 
         return this.inventory;
     }
 
-    public static class Builder extends InventoryBuilder<InventoryBuilder, FastInventory> {
+    public static class Builder {
+
+        private InventoryManager manager;
+        private String identifier, title;
+        private InventorySortType sort;
+        private int size;
 
         public Builder(InventoryManager manager) {
-            super(manager);
+
+            this.manager = manager;
+
+            this.identifier = "unknown";
+            this.sort = InventorySortType.CHEST;
+
+            this.title = this.sort.getDefaultTitle();
+            this.size = this.sort.getDefaultSize();
         }
 
-        @Override
+        public Builder withId(String id) {
+            this.identifier = id;
+            return this;
+        }
+
+        public Builder withTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder withSize(int size) {
+            this.size = size;
+            return this;
+        }
+
+        public Builder withSort(InventorySortType sort) {
+            this.sort = sort;
+            return this;
+        }
+
         public FastInventory build() {
 
-            FastInventory inventory = new FastInventory(super.manager);
+            FastInventory inventory = new FastInventory(this.manager);
 
-            inventory.identifier = super.identifier;
-            inventory.title = super.title;
-            inventory.size = super.size;
-            inventory.sort = super.sort;
+            inventory.identifier = this.identifier;
+            inventory.title = this.title;
+            inventory.size = this.size;
+            inventory.sort = this.sort;
 
-            Optional<InventoryCreator> optional = InventoryCreator.findCreator(super.sort);
+            Optional<InventoryCreator> optional = InventoryCreator.findCreator(this.sort);
 
             if(!optional.isPresent())
-                throw new NullPointerException(String.format("No creator found for sort '%s'.", super.sort.getInventoryType().name()));
+                throw new NullPointerException(String.format("No creator found for sort '%s'.", this.sort.getInventoryType().name()));
 
             inventory.inventory = optional.get().getInventory(inventory);
             inventory.contents = new DefaultInventoryContents(inventory);

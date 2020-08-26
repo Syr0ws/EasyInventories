@@ -17,8 +17,8 @@
 package fr.syrows.easyinventories.manager;
 
 import fr.syrows.easyinventories.contents.InventoryContents;
-import fr.syrows.easyinventories.contents.sort.InventorySort;
 import fr.syrows.easyinventories.contents.items.ClickableItem;
+import fr.syrows.easyinventories.contents.sort.InventorySort;
 import fr.syrows.easyinventories.creators.ChestInventoryCreator;
 import fr.syrows.easyinventories.creators.CommonInventoryCreator;
 import fr.syrows.easyinventories.creators.InventoryCreator;
@@ -114,6 +114,19 @@ public class DefaultInventoryManager implements InventoryManager {
     @Override
     public List<Player> getViewers() {
         return new ArrayList<>(this.inventories.keySet());
+    }
+
+    @Override
+    public Inventory createInventory(SimpleInventory inventory) {
+
+        InventorySort sort = inventory.getSort();
+
+        Optional<InventoryCreator> optional = InventoryCreator.findCreator(sort);
+
+        if(!optional.isPresent())
+            throw new NullPointerException(String.format("No creator found for inventory sort '%s'.", sort.getInventoryType().name()));
+
+        return optional.get().getInventory(inventory);
     }
 
     // This method will not close the inventory using the Player#closeInventory() method.
