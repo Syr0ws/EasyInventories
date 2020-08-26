@@ -17,6 +17,7 @@
 package fr.syrows.configuration;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ConfigurationSection {
 
@@ -148,7 +149,7 @@ public interface ConfigurationSection {
      *
      * @throws NullPointerException if the path was found.
      */
-    List<Float> getListFloat(String path);
+    List<Float> getFloatList(String path);
 
     /**
      * Get the requested Object by path.
@@ -175,6 +176,30 @@ public interface ConfigurationSection {
      */
     boolean isSet(String path);
 
+    boolean isString(String path);
+
+    boolean isInt(String path);
+
+    boolean isByte(String path);
+
+    boolean isShort(String path);
+
+    boolean isLong(String path);
+
+    boolean isFloat(String path);
+
+    boolean isDouble(String path);
+
+    boolean isBoolean(String path);
+
+    boolean isList(String path);
+
+    boolean isSection(String path);
+
+    Set<String> getPaths();
+
+    Set<String> getSubPaths();
+
     /**
      * Get the requested ConfigurationSection by path.
      *
@@ -184,6 +209,8 @@ public interface ConfigurationSection {
      * @throws NullPointerException if the path was found.
      */
     ConfigurationSection getSection(String path);
+
+    ConfigurationSection getRoot();
 
     /**
      * Get the parent of this section.
